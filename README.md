@@ -8,11 +8,11 @@
 > 云学习（cloud-learning）系统是基于Java开发的分布式在线教育系统，可以帮助个人、企业或机构快速搭建一个在线学习平台、网校，满足企业的在线教学、在线培训、企业内训等需求
 
 ### 项目地址
-> 云学习系统([cloud-learning](https://github.com/yuanjiusheng/cloud-learning))：[Github地址](https://github.com/yuanjiusheng/cloud-learning) | 码云地址
+> 云学习系统([cloud-learning](https://github.com/yuanjiusheng/cloud-learning))：[Github地址](https://github.com/yuanjiusheng/cloud-learning) | [码云地址](https://gitee.com/yuanjiusheng/cloud-learning)
 >
-> 云学习Web门户([cloud-learning-front-web](https://github.com/yuanjiusheng/cloud-learning-front-web))：[Github地址](https://github.com/yuanjiusheng/cloud-learning-front-web) | 码云地址
+> 云学习Web门户([cloud-learning-front-web](https://github.com/yuanjiusheng/cloud-learning-front-web))：[Github地址](https://github.com/yuanjiusheng/cloud-learning-front-web) | [码云地址](https://gitee.com/yuanjiusheng/cloud-learning-front-web)
 >
-> 云学习管理门户([cloud-learning-front-admin](https://github.com/yuanjiusheng/cloud-learning-front-admin))：[Github地址](https://github.com/yuanjiusheng/cloud-learning-front-admin) | 码云地址
+> 云学习管理门户([cloud-learning-front-admin](https://github.com/yuanjiusheng/cloud-learning-front-admin))：[Github地址](https://github.com/yuanjiusheng/cloud-learning-front-admin) | [码云地址](https://gitee.com/yuanjiusheng/cloud-learning-front-admin)
 
 ### 系统展示
 <video src="https://downproxy.weiyun.com/tx_tls_gate=bucket0-40001.sh.gfp.tencent-cloud.com/11f80fba2d9b73a244bcd6bd2f4551ccdcae96ff/11f80fba2d9b73a244bcd6bd2f4551ccdcae96ff.mp4?sign=q-sign-algorithm%3Dsha1%26q-ak%3DF3SAooa4a5OIPBVaehkpYSjW%26q-sign-time%3D1610012418%3B1610023218%26q-key-time%3D1610012418%3B1610023278%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3D150e2da54009b409bcd59b089ba9461c59677f89" controls="controls" width="800" height="500">您的浏览器不支持播放该视频！</video>
