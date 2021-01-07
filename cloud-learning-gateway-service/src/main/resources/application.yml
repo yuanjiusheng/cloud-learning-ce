@@ -1,0 +1,104 @@
+spring:
+    profiles:
+        active: dev # options: prod，dev，test
+    liquibase:
+        enabled: false
+    main:
+        allow-bean-definition-overriding: true
+    security:
+        oauth2:
+            resourceserver:
+                jwt:
+                    jwk-set-uri: ${router.uri.auth-service}/jwt/publicKey
+    application:
+        name: cloud-learning-gateway-service
+    cloud:
+        nacos:
+            discovery:
+                server-addr: 127.0.0.1:8848
+        gateway:
+            #是否与服务发现组件进行结合，通过 serviceId(必须设置成大写) 转发到具体的服务实例。默认为false，设为true便开启通过服务中心的自动根据 serviceId 创建路由的功能。
+            discovery:
+                #路由访问方式：http://Gateway_HOST:Gateway_PORT/大写的serviceId/**，其中微服务应用名默认大写访问。
+                locator:
+                    #将请求路径上的服务名配置为小写（因为服务注册的时候，向注册中心注册时将服务名转成大写的了,比如以/service-hi/*的请求路径被路由转发到服务名为service-hi的服务上
+                    lower-case-service-id: true
+                    enabled: true
+            routes:
+                -   id: auth-service
+                    uri: http://localhost:6601/auth
+                    predicates:
+                        -   Path=/auth/**
+
+                -   id: learn-service
+                    uri: http://localhost:6602/learning
+                    predicates:
+                        -   Path=/learning/**
+
+                -   id: live-service
+                    uri: http://localhost:6603/live
+                    predicates:
+                        -   Path=/live/**
+
+                -   id: member-service
+                    uri: http://localhost:6604/member
+                    predicates:
+                        -   Path=/member/**
+
+                -   id: usercenter-service
+                    uri: http://localhost:6605/user-center
+                    predicates:
+                        -   Path=/user-center/**
+
+                -   id: user-service
+                    uri: http://localhost:6605/user
+                    predicates:
+                        -   Path=/user-center/**
+
+                -   id: exam-service
+                    uri: http://localhost:6606/exam
+                    predicates:
+                        -   Path=/exam/**
+
+                -   id: setting-service
+                    uri: http://localhost:6607/setting
+                    predicates:
+                        -   Path=/setting/**
+
+                -   id: oss-service
+                    uri: http://localhost:6608/oss
+                    predicates:
+                        -   Path=/oss/**
+
+                -   id: comment-service
+                    uri: http://localhost:6609/comment
+                    predicates:
+                        -   Path=/comment/**
+
+                -   id: message-service
+                    uri: http://localhost:6610/message
+                    predicates:
+                        -   Path=/message/**
+permit-all-url:
+    patterns:
+        -   /login
+        -   /login/refresh
+        -   /login/auth-code
+        -   /login/auth-code/refresh
+        -   /login/admin
+        -   /login/admin/refresh
+        -   /login/service
+        -   /login/service/refresh
+        -   /user-center/auth-api/by-mobile
+        -   /member/auth-api/by-mobile
+
+router:
+    uri:
+        auth-service: http://localhost:6601/auth
+        member-service: http://localhost:6604/member
+
+server:
+    port: 6600
+
+logback:
+    log-dir: /app/gateway/service/log

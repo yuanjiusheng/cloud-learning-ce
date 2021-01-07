@@ -1,0 +1,34 @@
+spring:
+    profiles:
+        active: dev # options: prod，dev，test
+    application:
+        name: cloud-learning-member-service
+    cloud:
+        nacos:
+            discovery:
+                server-addr: 127.0.0.1:8848
+
+mybatis-plus:
+    global-config:
+        field-strategy: 2
+        db-column-underline: true
+        refresh-mapper: true
+        db-config:
+            id-type: auto
+            table-prefix: t_
+    configuration:
+        map-underscore-to-camel-case: true
+        cache-enabled: false
+        return-instance-for-empty-row: true
+
+logback:
+    log-dir: /app/member/service/log
+
+server:
+    port: 6604
+    servlet:
+        context-path: /member
+
+gateway:
+    service:
+        url: http://localhost:6600

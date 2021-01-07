@@ -1,0 +1,45 @@
+spring:
+    profiles:
+        active: dev # options: prod，dev，test
+    application:
+        name: cloud-learning-oss-service
+    cloud:
+        nacos:
+            discovery:
+                server-addr: 127.0.0.1:8848
+    servlet:
+        multipart:
+            max-file-size: 5MB
+            max-request-size: 10MB
+
+mybatis-plus:
+    global-config:
+        field-strategy: 2
+        db-column-underline: true
+        refresh-mapper: true
+        db-config:
+            id-type: auto
+            table-prefix: t_
+    configuration:
+        map-underscore-to-camel-case: true
+        cache-enabled: false
+        return-instance-for-empty-row: true
+
+logback:
+    log-dir: /app/oss/service/log
+
+aliyun:
+    access-key: LTA4I4GSJFg5X6p2sSK3S0Lm67Acd1CzxSe
+    access-secret: lhpQDGUrk30AAm9xrabHYWKFjF745KRRT335DCSHXf
+    point: http://oss-cn-shenzhen.aliyuncs.com
+    bucket-name: oceappimg
+    visit-path: https://oceappimg.oss-cn-shenzhen.aliyuncs.com/
+
+server:
+    port: 6608
+    servlet:
+        context-path: /oss
+
+gateway:
+    service:
+        url: http://localhost:6600

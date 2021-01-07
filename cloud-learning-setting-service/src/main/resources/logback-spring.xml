@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <springProperty scope="context" name="log-dir" source="logback.log-dir"/>
+    <springProfile name="test,prod">
+        <appender name="STDOUT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${log-dir}/learning.log</file>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>INFO</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${log-dir}/learning.%d.%i.log</fileNamePattern>
+                <maxHistory>30</maxHistory>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+            <encoder>
+                <pattern>%d %p (%file:%line\)- %m%n</pattern>
+                <charset>UTF-8</charset>
+            </encoder>
+        </appender>
+        <appender name="STDERR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${log-dir}/learning-error.log</file>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>ERROR</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${log-dir}/learning-error.%d.%i.log</fileNamePattern>
+                <maxHistory>30</maxHistory>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+            <encoder>
+                <pattern>
+                    %d %p (%file:%line\)- %m%n
+                </pattern>
+                <charset>UTF-8</charset>
+            </encoder>
+        </appender>
+        <root level="DEBUG">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="STDERR" />
+        </root>
+    </springProfile>
+
+    <springProfile name="dev">
+        <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>%d -1 %msg%n</pattern>
+            </layout>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="consoleLog"/>
+        </root>
+    </springProfile>
+
+</configuration>

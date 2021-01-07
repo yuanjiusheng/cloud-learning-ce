@@ -1,0 +1,177 @@
+package com.yjs.cloud.learning.comment.biz.comment.service;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yjs.cloud.learning.comment.biz.api.member.MemberApi;
+import com.yjs.cloud.learning.comment.biz.api.member.bean.MemberResponse;
+import com.yjs.cloud.learning.comment.biz.comment.bean.*;
+import com.yjs.cloud.learning.comment.biz.like.bean.LikeCountListRequest;
+import com.yjs.cloud.learning.comment.biz.like.bean.LikeCountResponse;
+import com.yjs.cloud.learning.comment.biz.like.bean.LikeGetListRequest;
+import com.yjs.cloud.learning.comment.biz.like.bean.LikeResponse;
+import com.yjs.cloud.learning.comment.biz.like.enums.LikeTopicType;
+import com.yjs.cloud.learning.comment.biz.like.service.LikeService;
+import com.yjs.cloud.learning.comment.biz.comment.entity.Comment;
+import com.yjs.cloud.learning.comment.biz.comment.mapper.CommentMapper;
+import com.yjs.cloud.learning.comment.common.entity.BaseEntity;
+import com.yjs.cloud.learning.comment.common.service.BaseServiceImpl;
+import com.yjs.cloud.learning.comment.common.util.StringUtils;
+import com.yjs.cloud.learning.comment.common.web.GlobalException;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * <p>
+ * 评论服务实现
+ * </p>
+ *
+ * @author bill.lai
+ * @since 2020-07-07
+ */
+@AllArgsConstructor
+@Service
+public class CommentServiceImpl extends BaseServiceImpl<CommentMapper, Comment> implements CommentService {
+
+    private final ReplyCommentService replyCommentService;
+    private final MemberApi memberApi;
+    private final LikeService likeService;
+    private final CommentMapper commentMapper;
+
+    /**
+     * 发表评论
+     * @param commentCreateRequest 参数
+     * @return 评论
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public CommentResponse create(CommentCreateRequest commentCreateRequest) {
+        if (commentCreateRequest.getMemberId() == null) {
+            throw new GlobalException("请先登录");
+        }
+        if (StringUtils.isEmpty(commentCreateRequest.getContent())) {
+            throw new GlobalException("评论内容不能为空");
+        }
+        if (commentCreateRequest.getTopicId() == null) {
+            throw new GlobalException("评论主题ID为必填项");
+        }
+        if (commentCreateRequest.getTopicType() == null) {
+            throw new GlobalException("评论主题类型为必填项");
+        }
+        Comment comment = commentCreateRequest.convert();
+        save(comment);
+        return comment.convert();
+    }
+
+    /**
+     * 删除类目
+     * @param commentDeleteRequest 请求参数
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void delete(CommentDeleteRequest commentDeleteRequest) {
+        if (commentDeleteRequest.getId() == null) {
+            throw new GlobalException("id为必填项");
+        }
+        Comment comment = getById(commentDeleteRequest.getId());
+        if (comment == null) {
+            throw new GlobalException("评论不存在");
+        }
+        removeById(commentDeleteRequest.getId());
+    }
+
+    /**
+     * 获取评论列表
+     * @param commentListRequest 参数
+     * @return 评论列表
+     */
+    @Override
+    public CommentListResponse list(CommentListRequest commentListRequest) {
+        Page<Comment> page = new Page<>(commentListRequest.getCurrent(), commentListRequest.getSize());
+        LambdaQueryWrapper<Comment> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Comment::getTopicId, commentListRequest.getTopicId());
+        lambdaQueryWrapper.eq(Comment::getTopicType, commentListRequest.getTopicType());
+        lambdaQueryWrapper.orderByDesc(BaseEntity::getCreateTime);
+        page = baseMapper.selectPage(page, lambdaQueryWrapper);
+        List<CommentResponse> records = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(page.getRecords())) {
+            List<Long> memberIdList = new ArrayList<>();
+            List<Long> commentIdList = new ArrayList<>();
+            for (Comment comment : page.getRecords()) {
+                if (!memberIdList.contains(comment.getMemberId())) {
+                    memberIdList.add(comment.getMemberId());
+                }
+                commentIdList.add(comment.getId());
+            }
+            // 获取评论人信息
+            List<MemberResponse> memberList = memberApi.getByIds(memberIdList);
+            Map<Long, MemberResponse> memberMap = new HashMap<>(16);
+            for (MemberResponse member : memberList) {
+                memberMap.put(member.getId(), member);
+            }
+            // 获取回复评论
+            List<ReplyCommentResponse> replyCommentList = replyCommentService.findList(commentIdList, commentListRequest.getMemberId());
+            Map<Long, List<ReplyCommentResponse>> replyCommentMap = new HashMap<>(16);
+            if (!CollectionUtils.isEmpty(replyCommentList)) {
+                for (ReplyCommentResponse replyCommentResponse : replyCommentList) {
+                    List<ReplyCommentResponse> list = replyCommentMap.computeIfAbsent(replyCommentResponse.getCommentId(), k -> new ArrayList<>());
+                    list.add(replyCommentResponse);
+                }
+            }
+            Map<Long, LikeResponse> likeMap = new HashMap<>(16);
+            Map<Long, Long> countLikeMap = new HashMap<>(16);
+            if (commentListRequest.getMemberId() != null) {
+                // 获取会员是否点赞了
+                LikeGetListRequest likeGetListRequest = new LikeGetListRequest();
+                likeGetListRequest.setMemberId(commentListRequest.getMemberId());
+                likeGetListRequest.setTopicIdList(commentIdList);
+                likeGetListRequest.setTopicType(LikeTopicType.comment);
+                List<LikeResponse> list = likeService.getList(likeGetListRequest);
+                for (LikeResponse likeResponse : list) {
+                    likeMap.put(likeResponse.getTopicId(), likeResponse);
+                }
+                // 评论点赞总数
+                LikeCountListRequest likeCountListRequest = new LikeCountListRequest();
+                likeCountListRequest.setTopicIdList(commentIdList);
+                likeCountListRequest.setTopicType(LikeTopicType.comment);
+                List<LikeCountResponse> countList = likeService.countList(likeCountListRequest);
+                for (LikeCountResponse likeCountResponse : countList) {
+                    countLikeMap.put(likeCountResponse.getTopicId(), likeCountResponse.getNum());
+                }
+            }
+            for (Comment comment : page.getRecords()) {
+                CommentResponse commentResponse = comment.convert();
+                commentResponse.setMember(memberMap.get(comment.getMemberId()));
+                commentResponse.setReplyList(replyCommentMap.get(comment.getId()));
+                commentResponse.setLike(likeMap.get(comment.getId()));
+                Long count = countLikeMap.get(comment.getId());
+                commentResponse.setLikeCount(count == null ? 0 : count);
+                records.add(commentResponse);
+            }
+        }
+        CommentListResponse commentListResponse = new CommentListResponse();
+        commentListResponse.setList(records);
+        commentListResponse.setPages(page.getPages());
+        commentListResponse.setCurrent(page.getSize());
+        commentListResponse.setSize(page.getCurrent());
+        commentListResponse.setTotal(page.getTotal());
+        return commentListResponse;
+    }
+
+    /**
+     * 获取主题评论数量
+     * @param commentCountListRequest 参数
+     * @return 评论数量列表
+     */
+    @Override
+    public List<CommentCountResponse> countList(CommentCountListRequest commentCountListRequest) {
+        return commentMapper.countList(commentCountListRequest);
+    }
+
+}

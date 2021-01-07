@@ -1,0 +1,10 @@
+spring:
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/cloud_learning_member
+        username: root
+        password: 12345678
+    liquibase:
+        change-log: classpath:/db/sql/change.sql
+    main:
+        allow-bean-definition-overriding: true
