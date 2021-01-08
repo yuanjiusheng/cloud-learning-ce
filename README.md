@@ -2,7 +2,7 @@
 ![订阅公众号](https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/74fe8facf3e39ad945c218f67d8cb0a078e2c9ce48e4f3da76f0b42308ae52dace40a259831b4459a4501e3becf2b8f4?pictype=scale&from=30113&version=3.3.3.3&uin=2509745&fname=%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7.png&size=750)
 
 ### 开源协议与版权协议
-> 请查阅[（使用前必读）开源协议.md](https://github.com/yuanjiusheng/cloud-learning/blob/master/%EF%BC%88%E4%BD%BF%E7%94%A8%E5%89%8D%E5%BF%85%E8%AF%BB%EF%BC%89cloud-learning%E5%BC%80%E6%BA%90%E5%8D%8F%E8%AE%AE.md)
+> **（使用前必读）**请查阅[LICENSE](https://github.com/yuanjiusheng/cloud-learning/blob/master/%EF%BC%88%E4%BD%BF%E7%94%A8%E5%89%8D%E5%BF%85%E8%AF%BB%EF%BC%89cloud-learning%E5%BC%80%E6%BA%90%E5%8D%8F%E8%AE%AE.md)
 
 ### 项目介绍
 > 云学习（cloud-learning）系统是基于Java开发的分布式在线教育系统，可以帮助个人、企业或机构快速搭建一个在线学习平台、网校，满足企业的在线教学、在线培训、企业内训等需求
