@@ -12,10 +12,18 @@
 >
 > 云学习Web门户([cloud-learning-front-web](https://github.com/yuanjiusheng/cloud-learning-front-web))：[Github地址](https://github.com/yuanjiusheng/cloud-learning-front-web) | [码云地址](https://gitee.com/yuanjiusheng/cloud-learning-front-web)
 >
-> 云学习管理门户([cloud-learning-front-admin](https://github.com/yuanjiusheng/cloud-learning-front-admin))：[Github地址](https://github.com/yuanjiusheng/cloud-learning-front-admin) | [码云地址](https://gitee.com/yuanjiusheng/cloud-learning-front-admin)
 
 ### 系统展示
-<video src="https://downproxy.weiyun.com/tx_tls_gate=bucket0-40001.sh.gfp.tencent-cloud.com/11f80fba2d9b73a244bcd6bd2f4551ccdcae96ff/11f80fba2d9b73a244bcd6bd2f4551ccdcae96ff.mp4?sign=q-sign-algorithm%3Dsha1%26q-ak%3DF3SAooa4a5OIPBVaehkpYSjW%26q-sign-time%3D1610012418%3B1610023218%26q-key-time%3D1610012418%3B1610023278%26q-header-list%3Dhost%26q-url-param-list%3D%26q-signature%3D150e2da54009b409bcd59b089ba9461c59677f89" controls="controls" width="800" height="500">您的浏览器不支持播放该视频！</video>
+> [点击播放系统展示视频](https://share.weiyun.com/LKuqMTQM)
+>
+> [查看高清图](https://share.weiyun.com/1IOQKatY)
+>
+>![首页](https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/eb927eef46c4c278911c7845573c809520dff553eed864e6a7cbc51142d0a821380fba9bf184a8f808e29d80abc6b4dd?pictype=scale&from=30113&version=3.3.3.3&uin=2509745&fname=%E7%B3%BB%E7%BB%9F%E5%B1%95%E7%A4%BA%E5%9B%BE1.png&size=750)
+>
+> ![详情页](https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/ef7bf393da88939e8b4b062a4638d7194ea43e4d7bdbca667ca987d3fcc9c36504d4622c178ba7b16c29ac9c7dff432c?pictype=scale&from=30113&version=3.3.3.3&uin=2509745&fname=%E7%B3%BB%E7%BB%9F%E5%B1%95%E7%A4%BA%E5%9B%BE2.png&size=750)
+>
+> ![收藏页](https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/720eaf6396059d1991dec73467728f035ebdd9c95f95ffd8e861928abaa0ee6f1a652ddf8d883861e7e9d7d9bcfb8431?pictype=scale&from=30113&version=3.3.3.3&uin=2509745&fname=%E7%B3%BB%E7%BB%9F%E5%B1%95%E7%A4%BA%E5%9B%BE3.png&size=750)
+>
 
 ### 官方交流群
 > <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=IBIAaD415UtInXIty2DgO7Yg9kTsgjnd&jump_from=webapi"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="cloud-learning官方群" title="cloud-learning官方群"> 855067729</a>
