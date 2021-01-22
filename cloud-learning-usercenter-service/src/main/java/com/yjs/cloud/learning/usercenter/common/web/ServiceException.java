@@ -24,7 +24,7 @@ public class ServiceException extends RuntimeException {
     }
 
     public ServiceException(String message){
-        this.code = 403;
+        this.code = 555;
         this.message = message;
     }
 

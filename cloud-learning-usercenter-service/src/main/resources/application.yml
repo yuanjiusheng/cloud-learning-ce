@@ -29,3 +29,36 @@ server:
 gateway:
     service:
         url: http://localhost:6600
+
+oauth2:
+    work-we-chat:
+        # 企业ID
+        corp-id: wwf68b26b22ab942a8
+        # appSecret
+        corp-secret: DdVzHE_nXvJ9ZDoJl0d-L7f64G379rI7WuS41-w2leE
+        # APi跟地址
+        api-host: https://qyapi.weixin.qq.com/cgi-bin
+        # 自定义状态标志
+        state: cloud-learning
+        # appId
+        agent-id: 1000002
+    # 钉钉
+    ding-talk:
+        # 企业corpId
+        corp-id: ding759bd6c8bd92746f35c2f4657eb6378f
+        # 应用agentId
+        agent-id: 283057574
+        # 应用的appKey
+        app-key: dinga3dhhr61iacneein
+        # 应用的appSecret
+        app-secret: TkSeyUwUbQS5_J93ecsUwFw8hpZomRbhRpXjrsAPtVKa_LU2WcFvdxRxlgXnvLoT
+        #加解密需要用到的token，企业可以随机填写。如 "123456"
+        token: oceoce
+        #钉钉API Host
+        api-host: https://oapi.dingtalk.com
+        #数据加密密钥。用于回调数据的加密，长度固定为43个字符，从a-z, A-Z, 0-9共62个字符中选取, 您可以随机生成
+        aes-key: abcdefghijabcdefghijabcdefghijabcdefghij123
+        # 登录应用的appId
+        login-app-id: dingoadz2dkpfkxqrtdbot
+        # 登录应用的appSecret
+        login-app-secret: SuODly1m2eSj4sxh-fljBmC_QlU4b_J__BwWQh6kdm0thQDs2Evv8QqrfnTI6M3A

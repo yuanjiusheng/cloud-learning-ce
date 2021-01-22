@@ -24,7 +24,7 @@ public class GlobalException extends RuntimeException {
     }
 
     public GlobalException(String message){
-        this.code = 403;
+        this.code = 555;
         this.message = message;
     }
 

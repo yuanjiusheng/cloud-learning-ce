@@ -8,6 +8,7 @@ import com.yjs.cloud.learning.usercenter.base.department.service.DepartmentServi
 import com.yjs.cloud.learning.usercenter.common.util.StringUtils;
 import com.yjs.cloud.learning.usercenter.common.web.GlobalException;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ public class DepartmentController {
      * @param departmentGetListRequest 参数
      * @return 部门列表
      */
+    @ApiOperation(value = "获取部门列表", notes = "获取部门列表", httpMethod = "GET")
     @GetMapping("/department/list")
     public DepartmentGetListResponse getList(DepartmentGetListRequest departmentGetListRequest){
         return departmentService.findList(departmentGetListRequest);
