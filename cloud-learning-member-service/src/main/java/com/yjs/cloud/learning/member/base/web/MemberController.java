@@ -14,19 +14,19 @@ import java.util.List;
 
 
 /**
- * 用户控制器
+ * 会员控制器
  *
  * @author Bill.lai
  * @since 2019-08-23
  */
-@Api(tags = "会员信息")
+@Api(tags = "会员")
 @RestController
 @AllArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
 
-    @ApiOperation(value = "获取用户列表", notes = "获取用户列表", httpMethod = "GET")
+    @ApiOperation(value = "获取会员列表", notes = "获取会员列表", httpMethod = "GET")
     @GetMapping("/list")
     public MemberGetPageResponse getList(MemberGetPageRequest memberGetPageRequest) {
         return memberService.findList(memberGetPageRequest);
@@ -117,7 +117,7 @@ public class MemberController {
     }
 
     @ApiOperation(value = "根据ids获取会员信息", notes = "根据ids获取会员信息", httpMethod = "GET")
-    @GetMapping("/auth-api/by-ids")
+    @GetMapping("/public-api/by-ids")
     public List<MemberResponse> getByIds(MemberGetByIdsRequest memberGetByIdsRequest) {
         if (CollectionUtils.isEmpty(memberGetByIdsRequest.getIds())) {
             throw new GlobalException("ids为必填项");

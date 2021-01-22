@@ -8,7 +8,7 @@ import java.util.List;
 
 
 /**
- * 用户服务
+ * 会员服务
  *
  * @author Bill.lai
  * @since 2019-08-23

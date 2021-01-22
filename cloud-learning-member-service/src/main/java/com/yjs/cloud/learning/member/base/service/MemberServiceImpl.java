@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 用户服务实现
+ * 会员服务实现
  *
  * @author Bill.lai
  * @since 2019-08-23
