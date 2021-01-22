@@ -7,7 +7,6 @@ import com.yjs.cloud.learning.auth.common.service.BaseServiceImpl;
 import com.yjs.cloud.learning.auth.common.util.DateUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -34,25 +33,6 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
     @Override
     public List<Authority> getByUserId(Long userId) {
         return authorityMapper.selectByUserId(userId);
-    }
-
-    /**
-     * 是否拥有authorityName权限
-     * @param userId 用户名
-     * @param authorityName 权限名
-     * @return 是否拥有
-     */
-    @Override
-    public Boolean hasAuthority(Long userId, String authorityName){
-        List<Authority> authorityList = getByUserId(userId);
-        if(!CollectionUtils.isEmpty(authorityList)){
-            for (Authority authority : authorityList) {
-                if(authority.getName().equals(authorityName)){
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     /**

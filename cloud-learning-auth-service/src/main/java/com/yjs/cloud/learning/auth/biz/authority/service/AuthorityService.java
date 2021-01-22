@@ -22,14 +22,6 @@ public interface AuthorityService extends IBaseService<Authority> {
     List<Authority> getByUserId(Long userId);
 
     /**
-     * 是否拥有authorityName权限
-     * @param userId 用户名
-     * @param authorityName 权限名
-     * @return 是否拥有
-     */
-    Boolean hasAuthority(Long userId, String authorityName);
-
-    /**
      * 返回全部的权限(供树形结构)
      * @param authorities 所有权限
      * @return 树形结构数据

@@ -16,12 +16,12 @@ public class AuthCodeStoreServiceImpl implements AuthCodeStoreService {
     private final TimedCache<String, String> timedCache = CacheUtil.newTimedCache(1000 * 60 * 5);
 
     @Override
-    public void save(String mobilePhone, String authCode) {
-        timedCache.put(mobilePhone, authCode);
+    public void save(String mobile, String authCode) {
+        timedCache.put(mobile, authCode);
     }
 
     @Override
-    public String get(String mobilePhone) {
-        return timedCache.get(mobilePhone);
+    public String get(String mobile) {
+        return timedCache.get(mobile);
     }
 }

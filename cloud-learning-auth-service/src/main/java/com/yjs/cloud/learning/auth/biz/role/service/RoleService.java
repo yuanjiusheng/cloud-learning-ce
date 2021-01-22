@@ -1,64 +1,46 @@
 package com.yjs.cloud.learning.auth.biz.role.service;
 
-
 import com.yjs.cloud.learning.auth.biz.authority.entity.Authority;
+import com.yjs.cloud.learning.auth.biz.role.bean.*;
 import com.yjs.cloud.learning.auth.biz.role.entity.Role;
 import com.yjs.cloud.learning.auth.common.service.IBaseService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
  * 角色服务
  *
- * @author Andrew.xiao
+ * @author bill.lai
  * @since 2019/6/12
  */
 public interface RoleService extends IBaseService<Role> {
+
     /**
-     * 获取某角色下的权限
-     * @param id 角色id
-     * @return 角色下的权限列表
+     * 获取角色的权限列表
+     * @param roleGetAuthorityListRequest 请求参数
+     * @return 角色的权限列表
      */
-    List<Authority> getRolePermissions(Long id);
+    List<Authority> getRoleAuthorityList(RoleGetAuthorityListRequest roleGetAuthorityListRequest);
 
     /**
      * 更新角色下的权限
-     * @param id 角色id
-     * @param authorities 权限集合
+     * @param roleAuthorityUpdateRequest 请求参数
      */
-    void updateRolePermissions(Long id, List<Authority> authorities);
+    @Transactional(rollbackFor = Exception.class)
+    void updateRoleAuthorityList(RoleAuthorityUpdateRequest roleAuthorityUpdateRequest);
 
     /**
-     * 获取用户下的角色
-     * @param userId 用户id
+     * 获取用户的角色
+     * @param roleUserGetListRequest 请求参数
      * @return 用户角色列表
      */
-    List<Role> getByUserId(Long userId);
+    List<RoleResponse> getUserRoleList(RoleUserGetListRequest roleUserGetListRequest);
 
     /**
-     * 插入用户角色
-     * @param id 用户id
-     * @param role 角色信息
+     * 更新用户的角色
+     * @param roleUserUpdateRequest 请求参数
      */
-    void insertUserRole(Long id, Role role);
-
-    /**
-     * 删除用户角色
-     * @param id 用户id
-     */
-    void deleteUserRoles(Long id);
-
-    /**
-     * 获取用户下的角色
-     * @param id 用户id
-     * @return 用户角色列表
-     */
-    List<Role> getUserRoles(Long id);
-
-    /**
-     * 更新用户下的角色
-     * @param id 用户id
-     * @param roles 角色列表
-     */
-    void updateUserRoles(Long id, List<Role> roles);
+    @Transactional(rollbackFor = Exception.class)
+    void updateUserRoleList(RoleUserUpdateRequest roleUserUpdateRequest);
 }

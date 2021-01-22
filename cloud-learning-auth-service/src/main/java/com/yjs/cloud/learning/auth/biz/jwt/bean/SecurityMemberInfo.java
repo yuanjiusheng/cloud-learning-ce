@@ -12,7 +12,7 @@ import lombok.Data;
 public class SecurityMemberInfo {
 
     /**
-     * 商城会员id
+     * 会员id
      */
     private Long id;
 

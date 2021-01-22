@@ -87,7 +87,21 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
             user.setUsername(username);
             user.setPassword(passwordEncoder.encode(member.getPassword()));
             securityUser = new SecurityUser(user, mapToGrantedAuthorities(authorities), Oauth2Constant.SCOPE_WEB_CLIENT_PASSWORD);
-        } else if(Oauth2Constant.SCOPE_ADMIN_CLIENT.equals(scope)){
+        } else if (Oauth2Constant.SCOPE_ADMIN_CLIENT.equals(scope)) {
+            UserResponse user = userApi.getByMobile(username);
+            if (user == null) {
+                throw new UsernameNotFoundException(MessageConstant.USERNAME_IS_NOT_FOUND);
+            }
+            if (!isRefresh) {
+                String authCode = authCodeStoreService.get(username);
+                if (authCode == null) {
+                    throw new UsernameNotFoundException(MessageConstant.USERNAME_PASSWORD_ERROR);
+                }
+                user.setPassword(passwordEncoder.encode(authCode));
+            }
+            List<Authority> authorities = authorityService.getByUserId(user.getId());
+            securityUser = new SecurityUser(user, mapToGrantedAuthorities(authorities), Oauth2Constant.SCOPE_ADMIN_CLIENT);
+        } else if(Oauth2Constant.SCOPE_ADMIN_CLIENT_PASSWORD.equals(scope)){
             UserResponse user = userApi.getByMobile(username);
             if (user == null) {
                 throw new UsernameNotFoundException(MessageConstant.USERNAME_PASSWORD_ERROR);
@@ -95,7 +109,47 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
             List<Authority> authorities = authorityService.getByUserId(user.getId());
             user.setUsername(username);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            securityUser = new SecurityUser(user, mapToGrantedAuthorities(authorities), Oauth2Constant.SCOPE_ADMIN_CLIENT);
+            securityUser = new SecurityUser(user, mapToGrantedAuthorities(authorities), Oauth2Constant.SCOPE_ADMIN_CLIENT_PASSWORD);
+        } else if(Oauth2Constant.SCOPE_WORK_WE_CHAT_CLIENT.equals(scope)){
+            String mobile;
+            if (isRefresh) {
+                mobile = username;
+            } else {
+                UserResponse workWeChatUser = userApi.getByWorkWeChatCode(username);
+                if (workWeChatUser == null) {
+                    throw new UsernameNotFoundException(MessageConstant.USERNAME_IS_NOT_FOUND);
+                }
+                mobile = workWeChatUser.getMobile();
+            }
+            UserResponse systemUser = userApi.getByMobile(mobile);
+            if (systemUser == null) {
+                throw new UsernameNotFoundException(MessageConstant.USERNAME_PASSWORD_ERROR);
+            }
+            List<Authority> authorities = authorityService.getByUserId(systemUser.getId());
+            // 扫码登录，账号密码都是code
+            systemUser.setPassword(passwordEncoder.encode(username));
+            systemUser.setName(mobile);
+            securityUser = new SecurityUser(systemUser, mapToGrantedAuthorities(authorities), Oauth2Constant.SCOPE_WORK_WE_CHAT_CLIENT);
+        } else if(Oauth2Constant.SCOPE_DING_TALK_CLIENT.equals(scope)){
+            String mobile;
+            if (isRefresh) {
+                mobile = username;
+            } else {
+                UserResponse dingTalkUser = userApi.getByDingTalkCode(username);
+                if (dingTalkUser == null) {
+                    throw new UsernameNotFoundException(MessageConstant.USERNAME_IS_NOT_FOUND);
+                }
+                mobile = dingTalkUser.getMobile();
+            }
+            UserResponse systemUser = userApi.getByMobile(mobile);
+            if (systemUser == null) {
+                throw new UsernameNotFoundException(MessageConstant.USERNAME_PASSWORD_ERROR);
+            }
+            List<Authority> authorities = authorityService.getByUserId(systemUser.getId());
+            systemUser.setName(mobile);
+            // 扫码登录，账号密码都是code
+            systemUser.setPassword(passwordEncoder.encode(username));
+            securityUser = new SecurityUser(systemUser, mapToGrantedAuthorities(authorities), Oauth2Constant.SCOPE_DING_TALK_CLIENT);
         } else if(Oauth2Constant.SCOPE_SERVICE_CLIENT.equals(scope)){
             String name = "service";
             if (!name.equals(username)) {

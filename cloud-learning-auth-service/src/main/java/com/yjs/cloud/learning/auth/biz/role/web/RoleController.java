@@ -3,54 +3,49 @@ package com.yjs.cloud.learning.auth.biz.role.web;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yjs.cloud.learning.auth.biz.authority.constant.AuthConstant;
 import com.yjs.cloud.learning.auth.biz.authority.entity.Authority;
-import com.yjs.cloud.learning.auth.biz.role.bean.RoleGetPageRequest;
-import com.yjs.cloud.learning.auth.biz.role.bean.RoleGetPageResponse;
+import com.yjs.cloud.learning.auth.biz.role.bean.*;
 import com.yjs.cloud.learning.auth.biz.role.entity.Role;
 import com.yjs.cloud.learning.auth.biz.role.service.RoleService;
 import com.yjs.cloud.learning.auth.common.controller.BaseController;
 import com.yjs.cloud.learning.auth.common.util.StringUtils;
-import com.yjs.cloud.learning.auth.common.web.ResourceNotFoundException;
+import com.yjs.cloud.learning.auth.common.web.GlobalException;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * 角色控制器
  *
- * @author Andrew.xiao
- * @since 2019/6/12
+ * @author bill.lai
+ * @since 2021/01/18
  */
 @Api(tags = "角色管理")
 @AllArgsConstructor
 @RestController
-@PreAuthorize(AuthConstant.SYSTEM_ROLE)
 public class RoleController extends BaseController {
 
     private final RoleService roleService;
 
-    /**
-     * 获取所有角色
-     * @return 角色列表
-     */
-    @GetMapping("/roles/all")
-    public List<Role> all() {
-        return roleService.list();
+    @ApiOperation(value = "获取角色列表", notes = "获取角色列表", httpMethod = "GET")
+    @GetMapping("/role/list")
+    public List<RoleResponse> list() {
+        List<Role> list = roleService.list();
+        List<RoleResponse> responseList = new ArrayList<>();
+        for (Role role : list) {
+            responseList.add(role.convert());
+        }
+        return responseList;
     }
 
-    /**
-     * 获取角色分页列表
-     * @param roleGetPageRequest 参数
-     * @return 角色列表
-     */
-    @GetMapping("/roles")
-    public RoleGetPageResponse listPage(RoleGetPageRequest roleGetPageRequest) {
+    @ApiOperation(value = "获取角色分页列表", notes = "获取角色分页列表", httpMethod = "GET")
+    @GetMapping("/role/page/list")
+    public RoleGetPageResponse page(RoleGetPageRequest roleGetPageRequest) {
         IPage<Role> page = new Page<>(roleGetPageRequest.getCurrent(), roleGetPageRequest.getSize());
         if (StringUtils.isEmpty(roleGetPageRequest.getKeyword())) {
             page = roleService.page(page);
@@ -66,93 +61,79 @@ public class RoleController extends BaseController {
         return roleGetPageResponse;
     }
 
-    /**
-     * 获取单个角色
-     * @param id 角色 id
-     * @return 角色详情
-     */
-    @GetMapping(value = "/roles/{id}")
-    public Role getRoles(@PathVariable Long id){
-        Role role = roleService.getById(id);
-        if (role == null) {
-            throw new ResourceNotFoundException(id,"role");
-        }
-        return role;
-    }
-
-    /**
-     * 获取角色下的权限
-     * @param id 角色 id
-     * @return 某角色拥有的权限列表
-     */
-    @GetMapping(value = "/roles/{id}/authorities")
-    public List<Authority> getRolePermissions(@PathVariable Long id){
-        return roleService.getRolePermissions(id);
-    }
-
-    /**
-     * 更新角色下的权限
-     * @param id 角色 id
-     */
-    @PutMapping(value = "/roles/{id}/authorities")
-    public void updateRolePermissions(@PathVariable Long id, @RequestBody List<Authority> authorities){
-        roleService.updateRolePermissions(id, authorities);
-    }
-
-    /**
-     * 创建角色
-     * @param role 角色
-     * @return 创建后的角色
-     */
-    @PostMapping("/roles")
+    @ApiOperation(value = "创建角色", notes = "创建角色", httpMethod = "POST")
+    @PostMapping("/role")
     @ResponseStatus(HttpStatus.CREATED)
-    public Role newRole(@RequestBody Role role) {
+    public RoleResponse createRole(@RequestBody RoleCreateRequest roleCreateRequest) {
+        if (StringUtils.isEmpty(roleCreateRequest.getName())) {
+            throw new GlobalException("名称为必填项");
+        }
+        if (StringUtils.isEmpty(roleCreateRequest.getCode())) {
+            throw new GlobalException("编号为必填项");
+        }
+        Role role = roleCreateRequest.convert();
         roleService.save(role);
-        return role;
+        return role.convert();
     }
 
-    /**
-     * 修改角色
-     * @param id 角色id
-     * @param role 角色
-     * @return 修改后的角色
-     */
-    @PutMapping("/roles/{id}")
-    public Role updateRole(@PathVariable Long id, @RequestBody Role role) {
-        role.setId(id);
+    @ApiOperation(value = "修改角色", notes = "修改角色", httpMethod = "PUT")
+    @PutMapping("/role")
+    public RoleResponse updateRole(@RequestBody RoleUpdateRequest roleUpdateRequest) {
+        if (roleUpdateRequest.getId() == null) {
+            throw new GlobalException("id为必填项");
+        }
+        Role role = roleService.getById(roleUpdateRequest.getId());
+        if (role == null) {
+            throw new GlobalException("角色不存在");
+        }
+        if (StringUtils.isEmpty(roleUpdateRequest.getName())) {
+            throw new GlobalException("名称为必填项");
+        }
+        if (StringUtils.isEmpty(roleUpdateRequest.getCode())) {
+            throw new GlobalException("编号为必填项");
+        }
+        role.setCode(roleUpdateRequest.getCode());
+        role.setName(roleUpdateRequest.getName());
+        role.setRemark(roleUpdateRequest.getRemark());
         roleService.updateById(role);
-        return role;
+        return role.convert();
     }
 
-    /**
-     * 删除角色
-     * @param id 角色id
-     */
-    @DeleteMapping("/roles/{id}")
+    @ApiOperation(value = "删除角色", notes = "删除角色", httpMethod = "DELETE")
+    @DeleteMapping("/role")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteRole(@PathVariable Long id) {
-        roleService.removeById(id);
+    public void deleteRole(@RequestBody RoleDeleteRequest roleDeleteRequest) {
+        if (roleDeleteRequest.getId() == null) {
+            throw new GlobalException("id为必填项");
+        }
+        Role role = roleService.getById(roleDeleteRequest.getId());
+        if (role == null) {
+            throw new GlobalException("角色不存在");
+        }
+        roleService.removeById(roleDeleteRequest.getId());
     }
 
-    /**
-     * 获取用户下的角色
-     * @param id 用户id
-     * @return 用户角色列表
-     */
-    @PreAuthorize(AuthConstant.SYSTEM_USER)
-    @GetMapping("users/{id}/roles")
-    public List<Role> getUserRoles(@PathVariable("id") Long id) {
-        return roleService.getUserRoles(id);
+    @ApiOperation(value = "获取角色下的权限", notes = "获取角色下的权限", httpMethod = "GET")
+    @GetMapping(value = "/role/authority/list")
+    public List<Authority> getRoleAuthorityList(RoleGetAuthorityListRequest roleGetAuthorityListRequest){
+        return roleService.getRoleAuthorityList(roleGetAuthorityListRequest);
     }
 
-    /**
-     * 更新用户下的角色
-     * @param id 用户id
-     * @param roles 角色列表
-     */
-    @PreAuthorize(AuthConstant.SYSTEM_USER)
-    @PutMapping("users/{id}/roles")
-    public void updateUserRoles(@PathVariable("id") Long id, @RequestBody List<Role> roles) {
-        roleService.updateUserRoles(id, roles);
+    @ApiOperation(value = "更新角色下的权限", notes = "更新角色下的权限", httpMethod = "PUT")
+    @PutMapping(value = "/role/authority/update")
+    public void updateRoleAuthorityList(@RequestBody RoleAuthorityUpdateRequest roleAuthorityUpdateRequest){
+        roleService.updateRoleAuthorityList(roleAuthorityUpdateRequest);
+    }
+
+    @ApiOperation(value = "获取用户的角色", notes = "获取用户的角色", httpMethod = "GET")
+    @GetMapping("/role/user/list")
+    public List<RoleResponse> getUserRoleList(RoleUserGetListRequest roleUserGetListRequest) {
+        return roleService.getUserRoleList(roleUserGetListRequest);
+    }
+
+    @ApiOperation(value = "修改用户的角色", notes = "修改用户的角色", httpMethod = "PUT")
+    @PutMapping("/role/user/list")
+    public void updateUserRoleList(@RequestBody RoleUserUpdateRequest roleUserUpdateRequest) {
+        roleService.updateUserRoleList(roleUserUpdateRequest);
     }
 }

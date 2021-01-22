@@ -1,5 +1,6 @@
 package com.yjs.cloud.learning.auth.common.request;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -9,6 +10,7 @@ import lombok.Data;
  * @author Bill.lai
  * @since 2020/9/25
  */
+@ApiModel
 @Data
 public class PageRequest {
 
