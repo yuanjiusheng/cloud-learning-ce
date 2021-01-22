@@ -26,7 +26,7 @@ public class MemberApi {
     public List<MemberResponse> getByIds(List<Long> ids) {
         Map<String, Object> param = new HashMap<>(1);
         param.put("ids", ids);
-        return requestService.list("/member/auth-api/by-ids", param, MemberResponse.class);
+        return requestService.list("/member/public-api/by-ids", param, MemberResponse.class);
     }
 
 }
