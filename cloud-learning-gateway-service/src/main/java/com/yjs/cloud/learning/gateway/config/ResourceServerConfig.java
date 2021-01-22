@@ -76,8 +76,8 @@ public class ResourceServerConfig {
                 // 系统设置
                 .pathMatchers("/setting/carousel/**").hasAnyAuthority("auth_setting_carousel")
                 // 获取当前信息
-                .pathMatchers("/current-member/**").permitAll()
-                .pathMatchers("/current-user/**").permitAll()
+                .pathMatchers("/current-member").permitAll()
+                .pathMatchers("/current-user").permitAll()
                 .pathMatchers("/auth/user/current").permitAll()
                 .pathMatchers("/auth/work-wechat/config").permitAll()
                 // 会员服务

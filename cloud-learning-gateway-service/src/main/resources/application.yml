@@ -31,9 +31,9 @@ spring:
                         -   Path=/auth/**
 
                 -   id: learn-service
-                    uri: http://localhost:6602/learning
+                    uri: http://localhost:6602/learn
                     predicates:
-                        -   Path=/learning/**
+                        -   Path=/learn/**
 
                 -   id: live-service
                     uri: http://localhost:6603/live
@@ -86,6 +86,9 @@ permit-all-url:
         -   /login/auth-code
         -   /login/auth-code/refresh
         -   /login/admin
+        -   /login/admin/auth-code
+        -   /login/work-we-chat
+        -   /login/ding-talk
         -   /login/admin/refresh
         -   /login/service
         -   /login/service/refresh

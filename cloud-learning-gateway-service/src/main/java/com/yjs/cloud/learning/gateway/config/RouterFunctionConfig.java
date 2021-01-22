@@ -2,9 +2,7 @@ package com.yjs.cloud.learning.gateway.config;
 
 import com.yjs.cloud.learning.gateway.biz.member.MemberApi;
 import com.yjs.cloud.learning.gateway.biz.member.UnifiedResponse;
-import com.yjs.cloud.learning.gateway.dto.AuthenticationRequest;
-import com.yjs.cloud.learning.gateway.dto.PasswordAuthenticationRequest;
-import com.yjs.cloud.learning.gateway.dto.UserDTO;
+import com.yjs.cloud.learning.gateway.dto.*;
 import com.yjs.cloud.learning.gateway.util.CurrentUserUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -49,8 +47,11 @@ public class RouterFunctionConfig {
                 .andRoute(POST("/login/refresh"), this::loginRefresh)
                 .andRoute(POST("/login/auth-code"), this::auth)
                 .andRoute(POST("/login/auth-code/refresh"), this::refreshAuth)
-                .andRoute(POST("/login/admin"), this::adminAuth)
-                .andRoute(POST("/login/admin/refresh"), this::refreshAuthAdmin)
+                .andRoute(POST("/login/admin"), this::adminLogin)
+                .andRoute(POST("/login/admin/refresh"), this::refreshAdminLogin)
+                .andRoute(POST("/login/admin/auth-code"), this::adminAuth)
+                .andRoute(POST("/login/work-we-chat"), this::workWeChatAuth)
+                .andRoute(POST("/login/ding-talk"), this::dingTalkAuth)
                 .andRoute(POST("/login/service"), this::serviceAuth)
                 .andRoute(POST("/login/service/refresh"), this::refreshAuthService)
                 .andRoute(GET("/current-member"), this::currentMember)
@@ -65,14 +66,19 @@ public class RouterFunctionConfig {
     private Mono<ServerResponse> currentUser(ServerRequest request) {
         UserDTO userDTO = CurrentUserUtils.get(request);
         if (userDTO == null) {
-            return ServerResponse
-                    .ok()
-                    .body(Mono.error(new UnsupportedOperationException()), Void.class);
+            return ServerResponse.ok().body(Mono.error(new UnsupportedOperationException()), Void.class);
         }else{
             Mono<UserDTO> mono = Mono.justOrEmpty(userDTO);
+            Mono<Map> mapMono = mono.flatMap(m -> {
+                Map<String, Object> res = new HashMap<>(16);
+                res.put("code", 0);
+                res.put("msg", "ok");
+                res.put("data", m);
+                return Mono.just(res);
+            });
             return ServerResponse
                     .ok()
-                    .body(mono, UserDTO.class);
+                    .body(mapMono, HashMap.class);
         }
     }
 
@@ -129,37 +135,9 @@ public class RouterFunctionConfig {
      */
     private Mono<ServerResponse> auth(ServerRequest request) {
         Mono<AuthenticationRequest> authenticationRequestMono = request.bodyToMono(AuthenticationRequest.class);
-        Mono<String> oauth2RequestMono = authenticationRequestMono.map(n -> "username=" +n.getMobilePhone() +
+        Mono<String> oauth2RequestMono = authenticationRequestMono.map(n -> "username=" +n.getMobile() +
                     "&password=" +n.getAuthCode() +
                     "&grant_type=password&scope=web-client"
-        );
-        return authResponseMono(oauth2RequestMono);
-    }
-
-    /**
-     * authentication
-     * @param request ServerRequest
-     * @return Mono<ServerResponse>
-     */
-    private Mono<ServerResponse> adminAuth(ServerRequest request) {
-        Mono<PasswordAuthenticationRequest> authenticationRequestMono = request.bodyToMono(PasswordAuthenticationRequest.class);
-        Mono<String> oauth2RequestMono = authenticationRequestMono.map(n -> "username=" + n.getUsername() +
-                "&password=" + n.getPassword() +
-                "&grant_type=password&scope=admin-client"
-        );
-        return authResponseMono(oauth2RequestMono);
-    }
-
-    /**
-     * authentication
-     * @param request ServerRequest
-     * @return Mono<ServerResponse>
-     */
-    private Mono<ServerResponse> serviceAuth(ServerRequest request) {
-        Mono<PasswordAuthenticationRequest> authenticationRequestMono = request.bodyToMono(PasswordAuthenticationRequest.class);
-        Mono<String> oauth2RequestMono = authenticationRequestMono.map(n -> "username=" + n.getUsername() +
-                "&password=" + n.getPassword() +
-                "&grant_type=password&scope=service-client"
         );
         return authResponseMono(oauth2RequestMono);
     }
@@ -178,14 +156,69 @@ public class RouterFunctionConfig {
     }
 
     /**
+     * authentication
+     * @param request ServerRequest
+     * @return Mono<ServerResponse>
+     */
+    private Mono<ServerResponse> adminLogin(ServerRequest request) {
+        Mono<PasswordAuthenticationRequest> authenticationRequestMono = request.bodyToMono(PasswordAuthenticationRequest.class);
+        Mono<String> oauth2RequestMono = authenticationRequestMono.map(n -> "username=" + n.getUsername() +
+                "&password=" + n.getPassword() +
+                "&grant_type=password&scope=admin-client-password"
+        );
+        return authResponseMono(oauth2RequestMono);
+    }
+
+    /**
      * refresh auth
      * @param request ServerRequest
      * @return Mono<ServerResponse>
      */
-    private Mono<ServerResponse> refreshAuthAdmin(ServerRequest request) {
+    private Mono<ServerResponse> refreshAdminLogin(ServerRequest request) {
         Mono<AuthenticationRequest> authenticationRequestMono = request.bodyToMono(AuthenticationRequest.class);
         Mono<String> oauth2RequestMono = authenticationRequestMono.map(n -> "refresh_token=" +n.getRefreshToken() +
-                "&grant_type=refresh_token&scope=admin-client"
+                "&grant_type=refresh_token&scope=admin-client-password"
+        );
+        return authResponseMono(oauth2RequestMono);
+    }
+
+    private Mono<ServerResponse> adminAuth(ServerRequest request) {
+        Mono<AuthenticationRequest> authenticationRequestMono = request.bodyToMono(AuthenticationRequest.class);
+        Mono<String> oauth2RequestMono = authenticationRequestMono.map(n -> "username=" +n.getMobile() +
+                "&password=" +n.getAuthCode() +
+                "&grant_type=password&scope=admin-client"
+        );
+        return authResponseMono(oauth2RequestMono);
+    }
+
+    private Mono<ServerResponse> workWeChatAuth(ServerRequest request) {
+        Mono<WorkWeChatAuthenticationRequest> authenticationRequestMono = request.bodyToMono(WorkWeChatAuthenticationRequest.class);
+        Mono<String> oauth2RequestMono = authenticationRequestMono.map(n -> "username=" + n.getCode() +
+                "&password=" + n.getCode() + "&state=" + n.getState() +
+                "&grant_type=password&scope=work-we-chat-client"
+        );
+        return authResponseMono(oauth2RequestMono);
+    }
+
+    private Mono<ServerResponse> dingTalkAuth(ServerRequest request) {
+        Mono<DingTalkAuthenticationRequest> authenticationRequestMono = request.bodyToMono(DingTalkAuthenticationRequest.class);
+        Mono<String> oauth2RequestMono = authenticationRequestMono.map(n -> "username=" + n.getCode() +
+                "&password=" + n.getCode() +
+                "&grant_type=password&scope=ding-talk-client"
+        );
+        return authResponseMono(oauth2RequestMono);
+    }
+
+    /**
+     * authentication
+     * @param request ServerRequest
+     * @return Mono<ServerResponse>
+     */
+    private Mono<ServerResponse> serviceAuth(ServerRequest request) {
+        Mono<PasswordAuthenticationRequest> authenticationRequestMono = request.bodyToMono(PasswordAuthenticationRequest.class);
+        Mono<String> oauth2RequestMono = authenticationRequestMono.map(n -> "username=" + n.getUsername() +
+                "&password=" + n.getPassword() +
+                "&grant_type=password&scope=service-client"
         );
         return authResponseMono(oauth2RequestMono);
     }

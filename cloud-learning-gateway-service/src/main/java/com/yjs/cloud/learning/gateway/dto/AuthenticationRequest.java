@@ -13,7 +13,7 @@ public class AuthenticationRequest {
     /**
      * 登录手机号码
      */
-    private String mobilePhone;
+    private String mobile;
 
     /**
      * 认证码
