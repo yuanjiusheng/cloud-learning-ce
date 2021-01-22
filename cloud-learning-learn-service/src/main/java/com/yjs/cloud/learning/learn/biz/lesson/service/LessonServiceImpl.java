@@ -104,7 +104,7 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
      */
     @Override
     public LessonListResponse list(LessonListRequest lessonListRequest) {
-        Page<LessonResponse> page = new Page<>(lessonListRequest.getPageNum(), lessonListRequest.getPageSize());
+        Page<LessonResponse> page = new Page<>(lessonListRequest.getCurrent(), lessonListRequest.getSize());
         page = lessonMapper.list(page, lessonListRequest);
         if (!CollectionUtils.isEmpty(page.getRecords())) {
             List<Long> lessonIdList = new ArrayList<>();

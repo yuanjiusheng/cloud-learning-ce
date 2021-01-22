@@ -1,9 +1,11 @@
 package com.yjs.cloud.learning.learn.biz.lesson.bean;
 
 import com.yjs.cloud.learning.learn.biz.lesson.enums.LessonStatus;
+import com.yjs.cloud.learning.learn.common.request.PageRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * <p>
@@ -13,9 +15,10 @@ import lombok.Data;
  * @author bill.lai
  * @since 2020-08-29
  */
+@EqualsAndHashCode(callSuper = true)
 @ApiModel
 @Data
-public class LessonListRequest {
+public class LessonListRequest extends PageRequest {
 
     @ApiModelProperty(value = "搜索关键字")
     private String keyword;
@@ -28,11 +31,5 @@ public class LessonListRequest {
 
     @ApiModelProperty(value = "是否显示")
     private Boolean isShow;
-
-    @ApiModelProperty(value = "分页页码")
-    private Integer pageNum = 1;
-
-    @ApiModelProperty(value = "分页数量")
-    private Integer pageSize = 20;
 
 }

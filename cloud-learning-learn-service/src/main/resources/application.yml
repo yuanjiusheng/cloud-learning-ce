@@ -26,7 +26,7 @@ logback:
 server:
     port: 6602
     servlet:
-        context-path: /learning
+        context-path: /learn
 
 gateway:
     service:
