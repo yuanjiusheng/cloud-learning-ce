@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
  * 图片上传
  * </p>
  *
- * @author tao.bai
+ * @author bill.lai
  * @since 2020-09-03
  */
 public interface AliYunOssService {

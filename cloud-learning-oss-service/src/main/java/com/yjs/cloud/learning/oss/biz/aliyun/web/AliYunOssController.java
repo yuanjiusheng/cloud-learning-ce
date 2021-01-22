@@ -16,7 +16,7 @@ import java.util.Random;
  * 图片上传控制器
  * </p>
  *
- * @author tao.bai
+ * @author bill.lai
  * @since 2020-09-03
  */
 @RestController
