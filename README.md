@@ -5,10 +5,15 @@
 ### 项目介绍
 > 云学习（cloud-learning）系统是基于Java开发的分布式在线教育系统，可以帮助个人、企业或机构快速搭建一个在线学习平台、网校，满足企业的在线教学、在线培训、企业内训等需求
 
+### 演示地址
+> 官网：[http://www.chawind.com](http://www.chawind.com)
+> 
+> 前台演示地址：[http://www.chawind.com:6659](http://www.chawind.com:6659)
+> 
+> 后台演示地址：[http://www.chawind.com:6658](http://www.chawind.com:6658)
+
 ### 项目地址
 > 云学习系统([cloud-learning](https://github.com/yuanjiusheng/cloud-learning))：[Github地址](https://github.com/yuanjiusheng/cloud-learning) | [码云地址](https://gitee.com/yuanjiusheng/cloud-learning)
->
-> 云学习Web门户([cloud-learning-front-web](https://github.com/yuanjiusheng/cloud-learning-front-web))：[Github地址](https://github.com/yuanjiusheng/cloud-learning-front-web) | [码云地址](https://gitee.com/yuanjiusheng/cloud-learning-front-web)
 
 ### 系统展示
 > [点击播放系统展示视频](https://share.weiyun.com/LKuqMTQM)
