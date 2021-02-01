@@ -106,18 +106,35 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
     public LessonListResponse list(LessonListRequest lessonListRequest) {
         Page<LessonResponse> page = new Page<>(lessonListRequest.getCurrent(), lessonListRequest.getSize());
         page = lessonMapper.list(page, lessonListRequest);
-        if (!CollectionUtils.isEmpty(page.getRecords())) {
+        List<LessonResponse> records = page.getRecords();
+        if (!CollectionUtils.isEmpty(records)) {
             List<Long> lessonIdList = new ArrayList<>();
-            for (LessonResponse lesson : page.getRecords()) {
+            for (LessonResponse lesson : records) {
                 lessonIdList.add(lesson.getId());
             }
+            // 收藏数量
+            Map<Long, Long> favoriteMap = getFavoriteMap(lessonIdList);
+            // 点赞数量
+            Map<Long, Long> likeMap = getLikeMap(lessonIdList);
+            // 评论数量
+            Map<Long, Long> commentMap = getCommentMap(lessonIdList);
+            // 在学人数
+            Map<Long, Long> learnMap = getLearnMap(lessonIdList);
             Map<Long, List<Long>> lessonCategoryRelationMap = getCidMap(lessonIdList);
-            for (LessonResponse lessonResponse : page.getRecords()) {
+            for (LessonResponse lessonResponse : records) {
+                // 点赞数量
+                lessonResponse.setLikeNum(likeMap.get(lessonResponse.getId()));
+                // 评论数量
+                lessonResponse.setCommentNum(commentMap.get(lessonResponse.getId()));
+                // 收藏数量
+                lessonResponse.setFavoriteNum(favoriteMap.get(lessonResponse.getId()));
+                // 学习人数
+                lessonResponse.setLearnNum(learnMap.get(lessonResponse.getId()));
                 lessonResponse.setCidList(lessonCategoryRelationMap.get(lessonResponse.getId()));
             }
         }
         LessonListResponse lessonListResponse = new LessonListResponse();
-        lessonListResponse.setList(page.getRecords());
+        lessonListResponse.setList(records);
         lessonListResponse.setPages(page.getPages());
         lessonListResponse.setSize(page.getSize());
         lessonListResponse.setCurrent(page.getCurrent());
