@@ -44,10 +44,6 @@ public class CommentController extends BaseController {
     @ApiOperation(value = "获取评论列表", notes = "获取评论列表", httpMethod = "GET")
     @GetMapping("/public-api/comment/list")
     public CommentListResponse list(CommentListRequest commentListRequest) {
-        UserDTO user = getUser();
-        if (user != null) {
-            commentListRequest.setMemberId(user.getId());
-        }
         return commentService.list(commentListRequest);
     }
 
@@ -68,5 +64,15 @@ public class CommentController extends BaseController {
     @GetMapping("/public-api/comment/count")
     public List<CommentCountResponse> countList(CommentCountListRequest commentCountListRequest) {
         return commentService.countList(commentCountListRequest);
+    }
+
+    @ApiOperation(value = "获取当前登录用户评论列表", notes = "获取当前登录用户评论列表", httpMethod = "GET")
+    @GetMapping("/auth-api/current-member/comment/list")
+    public CommentListResponse getCurrentMemberCommentList(CommentListRequest commentListRequest) {
+        UserDTO user = getUser();
+        if (user != null) {
+            commentListRequest.setMemberId(user.getId());
+        }
+        return commentService.list(commentListRequest);
     }
 }

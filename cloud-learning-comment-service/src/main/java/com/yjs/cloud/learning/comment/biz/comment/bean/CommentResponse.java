@@ -46,4 +46,8 @@ public class CommentResponse extends BaseResponse {
     @ApiModelProperty(value = "评论点赞总数")
     private Long likeCount;
 
+    @JSONField(serialzeFeatures = SerializerFeature.DisableCircularReferenceDetect)
+    @ApiModelProperty(value = "主题信息")
+    private CommentTopicResponse topic;
+
 }
