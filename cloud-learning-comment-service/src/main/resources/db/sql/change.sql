@@ -51,3 +51,13 @@ create table t_favorite
     update_time   timestamp default current_timestamp on update current_timestamp comment '最后修改时间',
     primary key (id)
 ) comment '收藏';
+
+--changeset bill:2020070708
+create table t_sensitive_word
+(
+    id            bigint auto_increment comment '主键id',
+    name          nvarchar(100)              not null comment '敏感词',
+    create_time   timestamp default current_timestamp comment '创建时间',
+    update_time   timestamp default current_timestamp on update current_timestamp comment '最后修改时间',
+    primary key (id)
+) comment '敏感词库';

@@ -113,3 +113,11 @@ INSERT INTO t_role_authority (id, role_id, authority_id) VALUES (27, 1, 23);
 --changeset bill:2019061811
 INSERT INTO t_authority (id, name, alias, pid) VALUES (24, 'setting_agreement', '协议管理', 22);
 INSERT INTO t_role_authority (id, role_id, authority_id) VALUES (28, 1, 24);
+
+--changeset bill:20210201
+INSERT INTO t_authority (id, name, alias, pid) VALUES (25,'comment', '评论管理', 0);
+INSERT INTO t_authority (id, name, alias, pid) VALUES (26,'comment_list', '评论列表', 25);
+INSERT INTO t_authority (id, name, alias, pid) VALUES (27,'comment_sensitive_setting', '敏感词管理', 25);
+INSERT INTO t_role_authority (role_id, authority_id) VALUES (1, 25);
+INSERT INTO t_role_authority (role_id, authority_id) VALUES (1, 26);
+INSERT INTO t_role_authority (role_id, authority_id) VALUES (1, 27);

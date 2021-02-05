@@ -104,6 +104,9 @@ public class ResourceServerConfig {
                 // 系统设置
                 .pathMatchers("/setting/carousel/**").hasAnyAuthority("auth_setting_carousel")
                 .pathMatchers("/setting/agreement/**").hasAnyAuthority("auth_setting_agreement")
+                // 评论管理
+                .pathMatchers("/comment/sensitive-word/**").hasAnyAuthority("auth_comment_sensitive_setting")
+                .pathMatchers("/comment/**").hasAnyAuthority("auth_comment", "auth_comment_list")
                 // 其他登录才能访问
                 .and().authorizeExchange().anyExchange().authenticated()
                 .and().exceptionHandling()

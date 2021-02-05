@@ -15,6 +15,7 @@ import com.yjs.cloud.learning.comment.biz.like.enums.LikeTopicType;
 import com.yjs.cloud.learning.comment.biz.like.service.LikeService;
 import com.yjs.cloud.learning.comment.biz.comment.entity.Comment;
 import com.yjs.cloud.learning.comment.biz.comment.mapper.CommentMapper;
+import com.yjs.cloud.learning.comment.biz.sensitiveword.service.WordService;
 import com.yjs.cloud.learning.comment.common.entity.BaseEntity;
 import com.yjs.cloud.learning.comment.common.service.BaseServiceImpl;
 import com.yjs.cloud.learning.comment.common.util.StringUtils;
@@ -46,6 +47,7 @@ public class CommentServiceImpl extends BaseServiceImpl<CommentMapper, Comment> 
     private final LessonApi lessonApi;
     private final LikeService likeService;
     private final CommentMapper commentMapper;
+    private final WordService wordService;
 
     /**
      * 发表评论
@@ -68,6 +70,7 @@ public class CommentServiceImpl extends BaseServiceImpl<CommentMapper, Comment> 
             throw new GlobalException("评论主题类型为必填项");
         }
         Comment comment = commentCreateRequest.convert();
+        comment.setContent(wordService.replace(comment.getContent()));
         save(comment);
         return comment.convert();
     }
@@ -164,14 +167,14 @@ public class CommentServiceImpl extends BaseServiceImpl<CommentMapper, Comment> 
                 for (LikeResponse likeResponse : list) {
                     likeMap.put(likeResponse.getTopicId(), likeResponse);
                 }
-                // 评论点赞总数
-                LikeCountListRequest likeCountListRequest = new LikeCountListRequest();
-                likeCountListRequest.setTopicIdList(commentIdList);
-                likeCountListRequest.setTopicType(LikeTopicType.comment);
-                List<LikeCountResponse> countList = likeService.countList(likeCountListRequest);
-                for (LikeCountResponse likeCountResponse : countList) {
-                    countLikeMap.put(likeCountResponse.getTopicId(), likeCountResponse.getNum());
-                }
+            }
+            // 评论点赞总数
+            LikeCountListRequest likeCountListRequest = new LikeCountListRequest();
+            likeCountListRequest.setTopicIdList(commentIdList);
+            likeCountListRequest.setTopicType(LikeTopicType.comment);
+            List<LikeCountResponse> countList = likeService.countList(likeCountListRequest);
+            for (LikeCountResponse likeCountResponse : countList) {
+                countLikeMap.put(likeCountResponse.getTopicId(), likeCountResponse.getNum());
             }
             for (Comment comment : page.getRecords()) {
                 CommentResponse commentResponse = comment.convert();
