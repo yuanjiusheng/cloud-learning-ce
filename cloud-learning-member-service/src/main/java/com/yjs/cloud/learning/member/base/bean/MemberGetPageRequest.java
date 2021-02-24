@@ -18,6 +18,6 @@ import lombok.EqualsAndHashCode;
 public class MemberGetPageRequest extends PageRequest {
 
     @ApiModelProperty(value = "搜索关键字")
-    public String keyword;
+    private String keyword;
 
 }

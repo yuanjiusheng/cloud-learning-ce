@@ -17,6 +17,6 @@ import java.util.List;
 public class MemberGetByIdsRequest {
 
     @ApiModelProperty(value = "会员id列表")
-    public List<Long> ids;
+    private List<Long> ids;
 
 }
