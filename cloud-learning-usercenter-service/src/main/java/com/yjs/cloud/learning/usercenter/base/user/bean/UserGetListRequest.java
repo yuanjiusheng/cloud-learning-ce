@@ -18,11 +18,11 @@ import lombok.EqualsAndHashCode;
 public class UserGetListRequest extends PageRequest {
 
     @ApiModelProperty(value = "部门id", example = "0", required = true)
-    public Long departmentId = 0L;
+    private Long departmentId = 0L;
 
     @ApiModelProperty(value = "是否包含子部门的用户")
-    public Boolean fetchAll;
+    private Boolean fetchAll;
 
     @ApiModelProperty(value = "搜索关键字")
-    public String keyword;
+    private String keyword;
 }
