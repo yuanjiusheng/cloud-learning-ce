@@ -1,6 +1,7 @@
 package com.yjs.cloud.learning.learn.biz.lesson.bean;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yjs.cloud.learning.learn.biz.lesson.enums.LessonStatus;
 import com.yjs.cloud.learning.learn.biz.record.bean.RecordResponse;
 import com.yjs.cloud.learning.learn.biz.signup.bean.SignUpResponse;
 import com.yjs.cloud.learning.learn.common.response.BaseResponse;
@@ -25,7 +26,7 @@ import java.util.List;
 @Data
 public class LessonResponse extends BaseResponse {
 
-    @ApiModelProperty(value = "课程名称（最大长度64个字符，只支持中文、字母、数字和下划线）")
+    @ApiModelProperty(value = "课程名称")
     private String name;
 
     @ApiModelProperty(value = "编号")
@@ -39,14 +40,11 @@ public class LessonResponse extends BaseResponse {
     @ApiModelProperty(value = "结束时间")
     private LocalDateTime endTime;
 
-    @ApiModelProperty(value = "封面图片（海报、banner）")
+    @ApiModelProperty(value = "封面图片")
     private String image;
 
-    @ApiModelProperty(value = "是否可见")
-    private Boolean isShow;
-
     @ApiModelProperty(value = "状态")
-    private String status;
+    private LessonStatus status;
 
     @ApiModelProperty(value = "短语介绍")
     private String phrase;

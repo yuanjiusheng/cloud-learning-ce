@@ -72,7 +72,6 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
     public LessonResponse create(LessonCreateRequest lessonCreateRequest) {
         Lesson lesson = lessonCreateRequest.convert();
         lesson.setCode(RandomUtils.number(0L));
-        lesson.setStatus(LessonStatus.normal);
         save(lesson);
         // 保存分类
         lessonCategoryRelationService.create(lesson.getId(), lessonCreateRequest.getCIdList());
@@ -130,6 +129,7 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
                 lessonResponse.setFavoriteNum(favoriteMap.get(lessonResponse.getId()));
                 // 学习人数
                 lessonResponse.setLearnNum(learnMap.get(lessonResponse.getId()));
+                // 目录
                 lessonResponse.setCidList(lessonCategoryRelationMap.get(lessonResponse.getId()));
             }
         }
@@ -157,11 +157,10 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
     /**
      * 删除课程列表
      * @param lessonDeleteRequest 请求参数
-     * @return 处理结果
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public LessonDeleteResponse delete(LessonDeleteRequest lessonDeleteRequest) {
+    public void delete(LessonDeleteRequest lessonDeleteRequest) {
         if (lessonDeleteRequest.getId() == null) {
             throw new GlobalException("ID为必填参数");
         }
@@ -169,9 +168,8 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
         if (lesson == null) {
             throw new GlobalException("找不到相关课程");
         }
-        removeById(lesson.getId());
-        lessonCategoryRelationService.delete(lesson.getId());
-        return null;
+        lesson.setStatus(LessonStatus.deleted);
+        updateById(lesson);
     }
 
     /**
@@ -187,7 +185,7 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
         if (lesson == null) {
             throw new GlobalException("找不到相关课程");
         }
-        lesson.setIsShow(true);
+        lesson.setStatus(LessonStatus.published);
         updateById(lesson);
     }
 
@@ -204,7 +202,7 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
         if (lesson == null) {
             throw new GlobalException("找不到相关课程");
         }
-        lesson.setIsShow(false);
+        lesson.setStatus(LessonStatus.unpublished);
         updateById(lesson);
     }
 

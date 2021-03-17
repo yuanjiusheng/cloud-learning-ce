@@ -1,6 +1,7 @@
 package com.yjs.cloud.learning.member.base.web;
 
 import com.yjs.cloud.learning.member.base.bean.*;
+import com.yjs.cloud.learning.member.base.service.MemberLevelRelationService;
 import com.yjs.cloud.learning.member.base.service.MemberService;
 import com.yjs.cloud.learning.member.common.util.StringUtils;
 import com.yjs.cloud.learning.member.common.web.GlobalException;
@@ -25,6 +26,7 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+    private final MemberLevelRelationService memberLevelRelationService;
 
     @ApiOperation(value = "获取会员列表", notes = "获取会员列表", httpMethod = "GET")
     @GetMapping("/list")
@@ -123,6 +125,12 @@ public class MemberController {
             throw new GlobalException("ids为必填项");
         }
         return memberService.getByIds(memberGetByIdsRequest.getIds());
+    }
+
+    @ApiOperation(value = "更新会员等级", notes = "更新会员等级", httpMethod = "PUT")
+    @PutMapping("/auth-api/update/level")
+    public void updateLevel(@RequestBody MemberLevelRelationUpdateRequest memberLevelRelationUpdateRequest) {
+        memberLevelRelationService.updateMemberLevel(memberLevelRelationUpdateRequest);
     }
 
 }

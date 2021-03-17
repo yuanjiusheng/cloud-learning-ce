@@ -23,15 +23,16 @@ public interface MemberLevelMapper extends IBaseMapper<MemberLevel> {
      * @return 会员列表
      */
     @Select({"<script>" ,
-            "select " +
+            "select " ,
             "   u.id, u.update_time, u.create_time, u.name, u.description, u.conditions " ,
             "from t_member_level u " ,
             "where 1 = 1 " ,
             "   <if test='req.keyword != null and req.keyword != \"\"'>",
-            "       and (" +
-            "           u.name like concat('%', #{req.keyword}, '%') " +
+            "       and (" ,
+            "           u.name like concat('%', #{req.keyword}, '%') " ,
             "       ) " ,
-            "   </if>",
+            "   </if>" ,
+            "order by u.conditions ",
             "</script>"})
     Page<MemberLevelResponse> findList(Page<MemberLevelResponse> page, @Param("req") MemberLevelGetPageRequest memberLevelGetPageRequest);
 }

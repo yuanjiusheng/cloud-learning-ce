@@ -27,8 +27,9 @@ public interface MemberMapper extends IBaseMapper<Member> {
     @Select({"<script>" ,
             "select " +
             "   u.id, u.update_time, u.create_time, u.username, u.code, u.name, u.status, u.gender, " ,
-            "   u.telephone, u.mobile, u.email, u.birthday " +
+            "   u.telephone, u.mobile, u.email, u.birthday, l.level_id " +
             "from t_member u " ,
+            "left join t_member_level_relation l on l.member_id = u.id " ,
             "where 1 = 1 " ,
             "   <if test='req.keyword != null and req.keyword != \"\"'>",
             "       and (" +

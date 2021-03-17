@@ -41,10 +41,9 @@ public interface LessonService extends IBaseService<Lesson> {
     /**
      * 删除频道列表
      * @param lessonDeleteRequest 请求参数
-     * @return 处理结果
      */
     @Transactional(rollbackFor = Exception.class)
-    LessonDeleteResponse delete(LessonDeleteRequest lessonDeleteRequest);
+    void delete(LessonDeleteRequest lessonDeleteRequest);
 
     /**
      * 发布课程

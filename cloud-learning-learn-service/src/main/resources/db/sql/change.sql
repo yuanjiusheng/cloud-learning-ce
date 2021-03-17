@@ -107,3 +107,6 @@ create table t_record
     update_time               timestamp default current_timestamp on update current_timestamp comment '最后修改时间',
     primary key (id)
 ) comment '学习记录';
+
+--changeset bill:20210305
+alter table t_lesson drop column is_show;

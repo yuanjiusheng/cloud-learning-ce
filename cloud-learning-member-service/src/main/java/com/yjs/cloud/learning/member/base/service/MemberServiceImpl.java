@@ -6,6 +6,8 @@ import com.yjs.cloud.learning.member.base.bean.*;
 import com.yjs.cloud.learning.member.base.entity.Member;
 import com.yjs.cloud.learning.member.base.enums.MemberStatus;
 import com.yjs.cloud.learning.member.base.mapper.MemberMapper;
+import com.yjs.cloud.learning.member.biz.level.bean.MemberLevelResponse;
+import com.yjs.cloud.learning.member.biz.level.service.MemberLevelService;
 import com.yjs.cloud.learning.member.common.entity.BaseEntity;
 import com.yjs.cloud.learning.member.common.service.BaseServiceImpl;
 import com.yjs.cloud.learning.member.common.util.RandomUtils;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 会员服务实现
@@ -28,6 +31,8 @@ import java.util.List;
 public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> implements MemberService {
 
     private final MemberMapper memberMapper;
+    private final MemberLevelService memberLevelService;
+    private final MemberLevelRelationService memberLevelRelationService;
 
     /**
      * 获取会员列表
@@ -38,6 +43,14 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
     public MemberGetPageResponse findList(MemberGetPageRequest memberGetPageRequest) {
         Page<MemberResponse> page = new Page<>(memberGetPageRequest.getCurrent(), memberGetPageRequest.getSize());
         page = memberMapper.findList(page, memberGetPageRequest);
+        List<Long> levelIdList = new ArrayList<>();
+        for (MemberResponse response : page.getRecords()) {
+            levelIdList.add(response.getLevelId());
+        }
+        Map<Long, MemberLevelResponse> levelMap = memberLevelService.getByIds(levelIdList);
+        for (MemberResponse response : page.getRecords()) {
+            response.setLevel(levelMap.get(response.getLevelId()));
+        }
         MemberGetPageResponse userGetListResponse = new MemberGetPageResponse();
         userGetListResponse.setList(page.getRecords());
         userGetListResponse.setCurrent(page.getCurrent());
@@ -60,7 +73,9 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
         if (member == null) {
             throw new GlobalException("找不到会员信息");
         }
-        return member.convert();
+        MemberResponse response = member.convert();
+        response.setLevel(memberLevelRelationService.getLevel(response.getId()));
+        return response;
     }
 
     /**
@@ -133,7 +148,7 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
         member.setPassword(memberCreateRequest.getPassword());
         member.setEmail(memberCreateRequest.getEmail());
         member.setName(RandomUtils.name(5));
-        member.setStatus(MemberStatus.official);
+        member.setStatus(MemberStatus.normal);
         save(member);
         member.setCode(RandomUtils.number(member.getId()));
         updateById(member);
@@ -154,7 +169,7 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
         Member member = new Member();
         member.setMobile(memberCreateMobileRequest.getMobile());
         member.setName(RandomUtils.name(5));
-        member.setStatus(MemberStatus.official);
+        member.setStatus(MemberStatus.normal);
         save(member);
         member.setCode(RandomUtils.number(member.getId()));
         updateById(member);

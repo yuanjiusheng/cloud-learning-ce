@@ -1,5 +1,6 @@
 package com.yjs.cloud.learning.usercenter.base.user.bean;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yjs.cloud.learning.usercenter.base.user.enums.UserStatus;
 import com.yjs.cloud.learning.usercenter.common.response.BaseResponse;
 import io.swagger.annotations.ApiModel;
@@ -47,6 +48,7 @@ public class UserResponse extends BaseResponse {
     @ApiModelProperty(value = "邮箱")
     private String email;
 
+    @JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
     @ApiModelProperty(value = "生日")
     private LocalDate birthday;
 
@@ -68,9 +70,11 @@ public class UserResponse extends BaseResponse {
     @ApiModelProperty(value = "婚姻状况")
     private String maritalStatus;
 
+    @JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
     @ApiModelProperty(value = "合同开始日期")
     private LocalDate contractStartDate;
 
+    @JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
     @ApiModelProperty(value = "合同结束日期")
     private LocalDate contractEndDate;
 

@@ -1,14 +1,20 @@
 package com.yjs.cloud.learning.member.biz.level.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yjs.cloud.learning.member.biz.level.bean.*;
 import com.yjs.cloud.learning.member.biz.level.entity.MemberLevel;
 import com.yjs.cloud.learning.member.biz.level.mapper.MemberLevelMapper;
+import com.yjs.cloud.learning.member.common.entity.BaseEntity;
 import com.yjs.cloud.learning.member.common.service.BaseServiceImpl;
 import com.yjs.cloud.learning.member.common.util.StringUtils;
 import com.yjs.cloud.learning.member.common.web.GlobalException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 会员等级服务实现
@@ -105,6 +111,18 @@ public class MemberLevelServiceImpl extends BaseServiceImpl<MemberLevelMapper, M
             throw new GlobalException("找不到相关数据");
         }
         removeById(memberLevelDeleteRequest.getId());
+    }
+
+    @Override
+    public Map<Long, MemberLevelResponse> getByIds(List<Long> idList) {
+        Map<Long, MemberLevelResponse> map = new HashMap<>();
+        LambdaQueryWrapper<MemberLevel> levelLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        levelLambdaQueryWrapper.in(BaseEntity::getId, idList);
+        List<MemberLevel> list = list(levelLambdaQueryWrapper);
+        for (MemberLevel memberLevel : list) {
+            map.put(memberLevel.getId(), memberLevel.convert());
+        }
+        return map;
     }
 
 }

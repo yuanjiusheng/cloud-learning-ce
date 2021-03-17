@@ -1,9 +1,8 @@
 package com.yjs.cloud.learning.member.base.bean;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.yjs.cloud.learning.member.base.enums.MemberStatus;
+import com.yjs.cloud.learning.member.biz.level.bean.MemberLevelResponse;
 import com.yjs.cloud.learning.member.common.response.BaseResponse;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -31,7 +30,7 @@ public class MemberResponse extends BaseResponse {
     @ApiModelProperty(value = "密码", hidden = true)
     private String password;
 
-    @ApiModelProperty(value = "工号")
+    @ApiModelProperty(value = "会员号")
     private String code;
 
     @ApiModelProperty(value = "姓名")
@@ -52,11 +51,17 @@ public class MemberResponse extends BaseResponse {
     @ApiModelProperty(value = "邮箱")
     private String email;
 
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="GMT+8")
+    @JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
     @ApiModelProperty(value = "生日")
     private LocalDate birthday;
 
     @ApiModelProperty(value = "头像")
     private String avatar;
+
+    @ApiModelProperty(value = "会员等级")
+    private MemberLevelResponse level;
+
+    @ApiModelProperty(value = "会员等级id")
+    private Long levelId;
+
 }

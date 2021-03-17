@@ -8,13 +8,16 @@ package com.yjs.cloud.learning.learn.biz.lesson.enums;
  */
 public enum LessonStatus {
     /**
-     * 正常
+     * 未发布
      */
-    normal,
+    unpublished,
     /**
-     * 删除
+     * 已发布
+     */
+    published,
+    /**
+     * 已删除
      */
     deleted
-
 
 }

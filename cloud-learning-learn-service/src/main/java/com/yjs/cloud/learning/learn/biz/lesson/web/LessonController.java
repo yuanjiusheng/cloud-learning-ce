@@ -51,8 +51,8 @@ public class LessonController extends BaseController {
 
     @ApiOperation(value = "删除课程", notes = "删除课程信息", httpMethod = "DELETE")
     @DeleteMapping("/lesson")
-    public LessonDeleteResponse delete(@RequestBody LessonDeleteRequest lessonDeleteRequest) {
-        return lessonService.delete(lessonDeleteRequest);
+    public void delete(@RequestBody LessonDeleteRequest lessonDeleteRequest) {
+        lessonService.delete(lessonDeleteRequest);
     }
 
     @ApiOperation(value = "发布课程", notes = "发布课程", httpMethod = "PUT")

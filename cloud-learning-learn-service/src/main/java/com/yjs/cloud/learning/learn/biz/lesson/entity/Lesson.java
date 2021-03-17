@@ -26,7 +26,7 @@ public class Lesson extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 课程名称（最大长度64个字符，只支持中文、字母、数字和下划线）
+     * 课程名称
      */
     private String name;
 
@@ -46,14 +46,9 @@ public class Lesson extends BaseEntity {
     private LocalDateTime endTime;
 
     /**
-     * 封面图片（海报、banner）
+     * 封面图片
      */
     private String image;
-
-    /**
-     * 是否可见
-     */
-    private Boolean isShow;
 
     /**
      * 状态
