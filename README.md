@@ -19,9 +19,9 @@
 
 ### 演示地址
 
-> - Community版本前台演示地址：[http://www.chawind.com:6659](http://www.chawind.com:6657)
+> - Community版本前台演示地址：[http://www.chawind.com:6657](http://www.chawind.com:6657)
 >
-> - Community版本后台演示地址：[http://www.chawind.com:6659](http://www.chawind.com:6656)
+> - Community版本后台演示地址：[http://www.chawind.com:6656](http://www.chawind.com:6656)
 >
 > - Enterprise版本前台演示地址：[http://www.chawind.com:6659](http://www.chawind.com:6659)
 >
