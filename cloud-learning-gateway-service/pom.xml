@@ -106,11 +106,6 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>com.nimbusds</groupId>-->
-<!--			<artifactId>nimbus-jose-jwt</artifactId>-->
-<!--			<version>8.2</version>-->
-<!--		</dependency>-->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>

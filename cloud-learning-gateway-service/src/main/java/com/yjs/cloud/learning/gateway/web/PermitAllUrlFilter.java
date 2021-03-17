@@ -49,7 +49,7 @@ public class PermitAllUrlFilter implements WebFilter {
         List<String> urlPatterns = permitAllUrlConfig.getPatterns();
         for (String urlPattern : urlPatterns) {
             boolean match = pathMatcher.match("/**/public-api/**", uri.getPath()) && !"/comment/public-api/comment/list".equals(uri.getPath());
-            if (pathMatcher.match(urlPattern, uri.getPath()) || match) {
+            if (pathMatcher.match(urlPattern, uri.getPath())) {
                 if (HttpMethod.GET.equals(exchange.getRequest().getMethod())) {
                     request = exchange.getRequest().mutate().header("Authorization", "").build();
                     return chain.filter(exchange.mutate().request(request).build());

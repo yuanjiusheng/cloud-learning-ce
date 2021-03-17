@@ -1,30 +1,26 @@
 package com.yjs.cloud.learning.auth.biz.api.member.enums;
 
 /**
- * 用户状态
+ * 会员状态
  *
  * @author Bill.lai
  * @since 2020/9/28
  */
 public enum MemberStatus {
     /**
-     * 试用
+     * 正常
      */
-    trial,
+    normal,
     /**
-     * 试用延期
+     * 黑名单
      */
-    trial_extension,
+    black,
     /**
-     * 正式
+     * 锁定
      */
-    official,
+    lock,
     /**
-     * 解聘
+     * 注销
      */
-    dismissal,
-    /**
-     * 离职
-     */
-    separation
+    deleted
 }
