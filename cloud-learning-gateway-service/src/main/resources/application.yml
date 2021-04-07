@@ -35,11 +35,6 @@ spring:
                     predicates:
                         -   Path=/learn/**
 
-                -   id: live-service
-                    uri: http://localhost:6603/live
-                    predicates:
-                        -   Path=/live/**
-
                 -   id: member-service
                     uri: http://localhost:6604/member
                     predicates:
@@ -54,11 +49,6 @@ spring:
                     uri: http://localhost:6605/user
                     predicates:
                         -   Path=/user-center/**
-
-                -   id: exam-service
-                    uri: http://localhost:6606/exam
-                    predicates:
-                        -   Path=/exam/**
 
                 -   id: setting-service
                     uri: http://localhost:6607/setting

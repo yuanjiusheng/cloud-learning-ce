@@ -70,14 +70,7 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-oauth2-resource-server</artifactId>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.cloud</groupId>-->
-<!--			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.cloud</groupId>-->
-<!--			<artifactId>spring-cloud-starter-openfeign</artifactId>-->
-<!--		</dependency>-->
+
 		<!-- NaCos -->
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
@@ -89,6 +82,7 @@
 			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
 			<version>${spring.cloud.alibaba.nacos.version}</version>
 		</dependency>
+
 		<!-- swagger2 -->
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -100,10 +94,12 @@
 			<artifactId>swagger-bootstrap-ui</artifactId>
 			<version>${swagger.ui.version}</version>
 		</dependency>
+
 		<!-- utils -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<version>1.18.14</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
