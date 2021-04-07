@@ -50,7 +50,7 @@ public class LessonUpdateRequest {
     private String introduction;
 
     @ApiModelProperty(value = "分类id列表", required = true)
-    private List<Long> cIdList;
+    private List<Long> cidList;
 
     public Lesson convert() {
         Lesson entity = new Lesson();

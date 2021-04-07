@@ -74,7 +74,7 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
         lesson.setCode(RandomUtils.number(0L));
         save(lesson);
         // 保存分类
-        lessonCategoryRelationService.create(lesson.getId(), lessonCreateRequest.getCIdList());
+        lessonCategoryRelationService.create(lesson.getId(), lessonCreateRequest.getCidList());
         return lesson.convert();
     }
 
@@ -92,7 +92,7 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
         }
         Lesson updateLesson = lessonUpdateRequest.convert();
         updateById(updateLesson);
-        lessonCategoryRelationService.update(lesson.getId(), lessonUpdateRequest.getCIdList());
+        lessonCategoryRelationService.update(lesson.getId(), lessonUpdateRequest.getCidList());
         return updateLesson.convert();
     }
 
