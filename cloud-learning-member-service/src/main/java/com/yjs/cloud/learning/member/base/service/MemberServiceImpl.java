@@ -15,6 +15,7 @@ import com.yjs.cloud.learning.member.common.util.StringUtils;
 import com.yjs.cloud.learning.member.common.web.GlobalException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +48,11 @@ public class MemberServiceImpl extends BaseServiceImpl<MemberMapper, Member> imp
         for (MemberResponse response : page.getRecords()) {
             levelIdList.add(response.getLevelId());
         }
-        Map<Long, MemberLevelResponse> levelMap = memberLevelService.getByIds(levelIdList);
-        for (MemberResponse response : page.getRecords()) {
-            response.setLevel(levelMap.get(response.getLevelId()));
+        if (!CollectionUtils.isEmpty(levelIdList)) {
+            Map<Long, MemberLevelResponse> levelMap = memberLevelService.getByIds(levelIdList);
+            for (MemberResponse response : page.getRecords()) {
+                response.setLevel(levelMap.get(response.getLevelId()));
+            }
         }
         MemberGetPageResponse userGetListResponse = new MemberGetPageResponse();
         userGetListResponse.setList(page.getRecords());

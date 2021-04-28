@@ -11,7 +11,7 @@ spring:
                 jwt:
                     jwk-set-uri: ${router.uri.auth-service}/jwt/publicKey
     application:
-        name: cloud-learning-gateway-service
+        name: cloud-learning-community-gateway-service
     cloud:
         nacos:
             discovery:
@@ -26,47 +26,47 @@ spring:
                     enabled: true
             routes:
                 -   id: auth-service
-                    uri: http://localhost:6601/auth
+                    uri: http://localhost:5501/auth
                     predicates:
                         -   Path=/auth/**
 
                 -   id: learn-service
-                    uri: http://localhost:6602/learn
+                    uri: http://localhost:5502/learn
                     predicates:
                         -   Path=/learn/**
 
                 -   id: member-service
-                    uri: http://localhost:6604/member
+                    uri: http://localhost:5504/member
                     predicates:
                         -   Path=/member/**
 
                 -   id: usercenter-service
-                    uri: http://localhost:6605/user-center
+                    uri: http://localhost:5505/user-center
                     predicates:
                         -   Path=/user-center/**
 
                 -   id: user-service
-                    uri: http://localhost:6605/user
+                    uri: http://localhost:5505/user
                     predicates:
                         -   Path=/user-center/**
 
                 -   id: setting-service
-                    uri: http://localhost:6607/setting
+                    uri: http://localhost:5507/setting
                     predicates:
                         -   Path=/setting/**
 
                 -   id: oss-service
-                    uri: http://localhost:6608/oss
+                    uri: http://localhost:5508/oss
                     predicates:
                         -   Path=/oss/**
 
                 -   id: comment-service
-                    uri: http://localhost:6609/comment
+                    uri: http://localhost:5509/comment
                     predicates:
                         -   Path=/comment/**
 
                 -   id: message-service
-                    uri: http://localhost:6610/message
+                    uri: http://localhost:5510/message
                     predicates:
                         -   Path=/message/**
 permit-all-url:
@@ -87,11 +87,11 @@ permit-all-url:
 
 router:
     uri:
-        auth-service: http://localhost:6601/auth
-        member-service: http://localhost:6604/member
+        auth-service: http://localhost:5501/auth
+        member-service: http://localhost:5504/member
 
 server:
-    port: 6600
+    port: 5500
 
 logback:
     log-dir: /app/gateway/service/log

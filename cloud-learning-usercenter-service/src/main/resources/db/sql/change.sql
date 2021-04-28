@@ -1,32 +1,31 @@
 --liquibase formatted sql
 
 --changeset bill:20190620180001
-create table t_department (
-  id bigint not null default 0 comment'主键id',
-  code nvarchar(50) not null comment '编号',
-  name nvarchar(50) not null comment '名称',
-  short_name nvarchar(50) not null default '' comment '简称',
-  enabled tinyint not null default 1 comment '0：弃用，1：启用',
-  create_time timestamp default current_timestamp comment '创建时间',
-  update_time timestamp default current_timestamp on update current_timestamp comment '最后修改时间',
-  primary key (id)
+create table t_department(
+ id          bigint auto_increment comment '主键id',
+ code        nvarchar(50) not null comment '编号',
+ name        nvarchar(50) not null comment '名称',
+ short_name  nvarchar(50) not null default '' comment '简称',
+ enabled     tinyint not null default 1 comment '0：弃用，1：启用',
+ create_time timestamp        default current_timestamp comment '创建时间',
+ update_time timestamp        default current_timestamp on update current_timestamp comment '最后修改时间',
+ primary key (id)
 ) comment '部门表';
---rollback drop table t_department;
 
 --changeset bill:20190930115001
 create table t_user
 (
-  id bigint not null default 0 comment '主键id',
-  username varchar(100) not null default '' comment '登陆账号',
-  password varchar(100) not null default '' comment '密码',
-  code varchar(30) not null default '' comment '员工编号',
-  name nvarchar(30) not null default '' comment '姓名',
-  status varchar(30) not null default '' comment '状态',
-  gender varchar(2) not null default '' comment '性别',
-  telephone varchar(20) not null default '' comment '办公电话',
-  mobile varchar(20) not null default '' comment '移动电话',
-  email varchar(30) not null default '' comment '电子邮件',
-  birthday date comment '生日',
+  id                bigint auto_increment comment '主键id',
+  username          varchar(100) not null default '' comment '登陆账号',
+  password          varchar(100) not null default '' comment '密码',
+  code              varchar(30)  not null default '' comment '员工编号',
+  name              nvarchar(30) not null default '' comment '姓名',
+  status            varchar(30)  not null default '' comment '状态',
+  gender            varchar(2)   not null default '' comment '性别',
+  telephone         varchar(20)  not null default '' comment '办公电话',
+  mobile            varchar(20)  not null default '' comment '移动电话',
+  email             varchar(30)  not null default '' comment '电子邮件',
+  birthday          date comment '生日',
   id_card varchar(20) not null default '' comment '身份证',
   nation nvarchar(20) not null default '' comment '民族',
   native_place nvarchar(1000) not null default '' comment '籍贯',
@@ -39,32 +38,6 @@ create table t_user
   update_time timestamp default current_timestamp on update current_timestamp comment '最后修改时间',
   primary key (id)
 ) comment '用户表';
---rollback drop table t_user;
-
---changeset bill:20190930114401
-create table t_role
-(
-  id bigint auto_increment comment '主键id',
-  code varchar(30) not null comment '编号',
-  name nvarchar(30) not null default '' comment '角色名',
-  remark nvarchar(255) default '' comment '备注',
-  create_time timestamp default current_timestamp comment '创建时间',
-  update_time timestamp default current_timestamp on update current_timestamp comment '最后修改时间',
-  primary key (id)
-) comment '角色表';
---rollback drop table t_role;
-
---changeset bill:20190930114402
-create table t_user_role
-(
-  id bigint auto_increment comment '主键id',
-  user_id bigint not null comment '用户id',
-  role_id bigint not null comment '角色id',
-  create_time timestamp default current_timestamp comment '创建时间',
-  update_time timestamp default current_timestamp on update current_timestamp comment '最后修改时间',
-  primary key (id)
-) comment '用户角色表';
---rollback drop table t_user_role;
 
 --changeset bill:20190930143003
 create table t_department_department(
@@ -77,7 +50,6 @@ create table t_department_department(
   update_time timestamp default current_timestamp on update current_timestamp comment '最后修改时间',
   primary key(id)
 ) comment '部门之间的关系表';
---rollback drop table t_department_department;
 
 --changeset bill:20190930114404
 create table t_user_department(
@@ -88,18 +60,17 @@ create table t_user_department(
   update_time timestamp default current_timestamp on update current_timestamp comment '最后修改时间',
   primary key(id)
 ) comment '用户与部门关系表';
---rollback drop table t_user_department;
 
 --changeset bill:20190930114405
-create table t_job(
-  id bigint comment '主键id',
-  short_name nvarchar(30) not null default '' comment '简称',
-  full_name nvarchar(30) not null default '' comment '全称',
-  create_time timestamp default current_timestamp comment '创建时间',
-  update_time timestamp default current_timestamp on update current_timestamp comment '最后修改时间',
-  primary key(id)
+create table t_job
+(
+    id          bigint auto_increment comment '主键id',
+    short_name  nvarchar(30) not null default '' comment '简称',
+    full_name   nvarchar(30) not null default '' comment '全称',
+    create_time timestamp default current_timestamp comment '创建时间',
+    update_time timestamp default current_timestamp on update current_timestamp comment '最后修改时间',
+    primary key (id)
 ) comment '职务表';
---rollback drop table t_job;
 
 --changeset bill:20190930114406
 create table t_user_job(
@@ -110,19 +81,18 @@ create table t_user_job(
   update_time timestamp default current_timestamp on update current_timestamp comment '最后修改时间',
   primary key(id)
 ) comment '用户与职务关系表';
---rollback drop table t_user_job;
 
 --changeset bill20190930114407
-create table t_post (
-  id bigint not null comment '主键id',
-  short_name nvarchar(30) not null comment '简称',
-  full_name nvarchar(30) not null comment'全称',
-  remark nvarchar(255) default '' comment '备注',
-  create_time timestamp default current_timestamp comment '创建时间',
-  update_time timestamp default current_timestamp on update current_timestamp comment '最后修改时间',
-  primary key (id)
+create table t_post
+(
+    id          bigint auto_increment comment '主键id',
+    short_name  nvarchar(30) not null comment '简称',
+    full_name   nvarchar(30) not null comment '全称',
+    remark      nvarchar(255) default '' comment '备注',
+    create_time timestamp default current_timestamp comment '创建时间',
+    update_time timestamp default current_timestamp on update current_timestamp comment '最后修改时间',
+    primary key (id)
 ) comment '岗位表';
---rollback drop table t_post;
 
 --changeset bill: 201909301144018
 create table t_user_post(
@@ -133,28 +103,34 @@ create table t_user_post(
   update_time timestamp default current_timestamp on update current_timestamp comment '最后修改日期',
   primary key(id)
 ) comment '用户与岗位关系表';
---rollback drop table t_user_post;
 
 --changeset bill:20190930114409
-create table t_manager (
-  id bigint comment'主键id',
-  short_name nvarchar(30) not null comment '简称',
-  full_name nvarchar(30) not null comment '全称',
-  remark nvarchar(255) not null default '' comment '备注',
-  create_time timestamp default current_timestamp comment '创建时间',
-  update_time timestamp default current_timestamp on update current_timestamp comment '最后修改时间',
-  primary key (id)
+create table t_manager
+(
+    id          bigint auto_increment comment '主键id',
+    short_name  nvarchar(30) not null comment '简称',
+    full_name   nvarchar(30) not null comment '全称',
+    remark      nvarchar(255) not null default '' comment '备注',
+    create_time timestamp default current_timestamp comment '创建时间',
+    update_time timestamp default current_timestamp on update current_timestamp comment '最后修改时间',
+    primary key (id)
 ) comment '上级领导表';
---rollback drop table t_manager;
 
 --changeset bill:201909301144010
-create table t_user_manager(
-  id bigint auto_increment comment '主键id',
-  user_id bigint not null comment '用户id',
-  manager_id bigint not null comment '上级领导id' ,
-  create_time timestamp default current_timestamp comment '创建时间',
-  update_time timestamp default current_timestamp on update current_timestamp comment '最后修改时间',
-  primary key(id)
+create table t_user_manager
+(
+    id          bigint auto_increment comment '主键id',
+    user_id     bigint not null comment '用户id',
+    manager_id  bigint not null comment '上级领导id',
+    create_time timestamp default current_timestamp comment '创建时间',
+    update_time timestamp default current_timestamp on update current_timestamp comment '最后修改时间',
+    primary key (id)
 ) comment '用户与上级领导关系表';
---rollback drop table t_user_manager;
 
+--changeset bill:201909301144011
+INSERT INTO t_user (id, username, password, code, name, status, gender, telephone, mobile, email, birthday, id_card,
+                    nation, native_place, id_card_address, current_address, marital_status, contract_start_date,
+                    contract_end_date, create_time, update_time)
+VALUES (1, 'admin', 'admin', 'admin', '猿究生', 'official', '女', '020-0000000', '13610210010', 'system@chawind.com',
+        '2020-10-01', '', '汉', '广东', '广州二沙岛', '广州天河', '未婚', '2021-03-31', '2023-03-31', '2020-09-28 16:50:38',
+        '2021-04-01 14:50:56');

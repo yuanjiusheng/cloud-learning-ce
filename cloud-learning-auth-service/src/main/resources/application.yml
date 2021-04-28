@@ -2,7 +2,7 @@ spring:
     profiles:
         active: dev # options: prod，dev，test
     application:
-        name: cloud-learning-auth-service
+        name: cloud-learning-community-auth-service
     cloud:
         nacos:
             discovery:
@@ -22,7 +22,7 @@ mybatis-plus:
         return-instance-for-empty-row: true
 
 server:
-    port: 6601
+    port: 5501
     servlet:
         context-path: /auth
 
@@ -31,5 +31,5 @@ logback:
 
 gateway:
     service:
-        url: http://localhost:6600
+        url: http://localhost:5500
 

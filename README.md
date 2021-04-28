@@ -66,7 +66,7 @@
 > - cloud-learning-community：[Github 地址](https://github.com/yuanjiusheng/cloud-learning-community) | [码云地址](https://gitee.com/yuanjiusheng/cloud-learning-community)
 
 ### 订阅公众号（猿究生），关注项目状态
-![订阅公众号](https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/74fe8facf3e39ad945c218f67d8cb0a078e2c9ce48e4f3da76f0b42308ae52dace40a259831b4459a4501e3becf2b8f4?pictype=scale&from=30113&version=3.3.3.3&uin=2509745&fname=%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7.png&size=750)
+> ![订阅公众号](https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/74fe8facf3e39ad945c218f67d8cb0a078e2c9ce48e4f3da76f0b42308ae52dace40a259831b4459a4501e3becf2b8f4?pictype=scale&from=30113&version=3.3.3.3&uin=2509745&fname=%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7.png&size=750)
 
 ### 官方交流群（855067729）
 

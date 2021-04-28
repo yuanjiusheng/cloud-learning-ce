@@ -5,7 +5,7 @@ spring:
         date-format: yyyy-MM-dd HH:mm:ss
         time-zone: GMT+8
     application:
-        name: cloud-learning-message-service
+        name: cloud-learning-community-message-service
     cloud:
         nacos:
             discovery:
@@ -28,10 +28,10 @@ logback:
     log-dir: /app/message/service/log
 
 server:
-    port: 6610
+    port: 5510
     servlet:
         context-path: /message
 
 gateway:
     service:
-        url: http://localhost:6600
+        url: http://localhost:5500
