@@ -73,4 +73,10 @@ public class LessonResponse extends BaseResponse {
     @ApiModelProperty(value = "学习进度")
     private List<RecordResponse> recordList;
 
+    @ApiModelProperty(value = "作业内容")
+    private String homework;
+
+    @ApiModelProperty(value = "作业附件")
+    private String homeworkAttachment;
+
 }

@@ -83,6 +83,10 @@ public class LessonController extends BaseController {
     @ApiOperation(value = "获取课程信息(用户端)", notes = "获取课程信息", httpMethod = "GET")
     @GetMapping("/public-api/lesson")
     public LessonResponse getLesson(LessonGetRequest lessonGetRequest) {
+        try {
+            lessonGetRequest.setMemberId(getLoginUserId());
+        }catch (Exception ignored) {
+        }
         return lessonService.get(lessonGetRequest);
     }
 

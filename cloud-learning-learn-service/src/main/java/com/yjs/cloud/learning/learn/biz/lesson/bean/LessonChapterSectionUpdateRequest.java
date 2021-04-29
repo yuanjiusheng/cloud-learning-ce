@@ -30,8 +30,11 @@ public class LessonChapterSectionUpdateRequest {
     @ApiModelProperty(value = "短语介绍", required = true)
     private String phrase;
 
-    @ApiModelProperty(value = "课程id", required = true)
+    @ApiModelProperty(value = "课程章id", required = true)
     private Long lessonChapterId;
+
+    @ApiModelProperty(value = "视频时长", required = true)
+    private Long totalTime;
 
     public LessonChapterSection convert() {
         LessonChapterSection entity = new LessonChapterSection();

@@ -46,7 +46,23 @@ public interface SignUpService extends IBaseService<SignUp> {
     /**
      * 根据课程id获取最新报名记录
      * @param lessonId 课程id
+     * @param memberId 会员id
      * @return 报名记录
      */
-    SignUpResponse getByLessonId(Long lessonId);
+    SignUpResponse getByLessonId(Long lessonId, Long memberId);
+
+    /**
+     * 获取报名记录
+     * @param signUpGetRequest 请求参数
+     * @return 报名记录
+     */
+    SignUpResponse get(SignUpGetRequest signUpGetRequest);
+
+    /**
+     * 检查并更新状态
+     * @param lessonId 课程id
+     * @param memberId 当前会员id
+     * @param signUpId 当前报名id
+     */
+    void checkAndUpdateStatus(Long lessonId, Long memberId, Long signUpId);
 }

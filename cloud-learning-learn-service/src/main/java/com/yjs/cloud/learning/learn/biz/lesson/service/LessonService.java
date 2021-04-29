@@ -77,4 +77,5 @@ public interface LessonService extends IBaseService<Lesson> {
      * @return 收藏的课程列表
      */
     LessonListResponse learnList(LessonLearnListRequest lessonLearnListRequest);
+
 }

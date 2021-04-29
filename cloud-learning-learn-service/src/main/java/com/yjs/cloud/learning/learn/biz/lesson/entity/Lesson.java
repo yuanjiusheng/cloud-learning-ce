@@ -65,6 +65,16 @@ public class Lesson extends BaseEntity {
      */
     private String introduction;
 
+    /**
+     * 作业内容
+     */
+    private String homework;
+
+    /**
+     * 作业附件
+     */
+    private String homeworkAttachment;
+
     public LessonResponse convert() {
         LessonResponse response = new LessonResponse();
         BeanCopierUtils.copy(this, response);

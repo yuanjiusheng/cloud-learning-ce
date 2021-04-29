@@ -42,6 +42,11 @@ public class LessonChapterSection extends BaseEntity {
      */
     private String phrase;
 
+    /**
+     * 内容总时间
+     */
+    private Long totalTime;
+
     public LessonChapterSectionResponse convert() {
         LessonChapterSectionResponse response = new LessonChapterSectionResponse();
         BeanCopierUtils.copy(this, response);

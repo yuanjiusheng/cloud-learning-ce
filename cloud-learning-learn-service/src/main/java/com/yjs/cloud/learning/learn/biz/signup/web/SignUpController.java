@@ -2,16 +2,14 @@ package com.yjs.cloud.learning.learn.biz.signup.web;
 
 import com.yjs.cloud.learning.learn.biz.signup.bean.SignUpCreateRequest;
 import com.yjs.cloud.learning.learn.biz.signup.bean.SignUpDeleteRequest;
+import com.yjs.cloud.learning.learn.biz.signup.bean.SignUpGetRequest;
 import com.yjs.cloud.learning.learn.biz.signup.bean.SignUpResponse;
 import com.yjs.cloud.learning.learn.biz.signup.service.SignUpService;
 import com.yjs.cloud.learning.learn.common.controller.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 报名控制器
@@ -38,6 +36,17 @@ public class SignUpController extends BaseController {
     public void cancel(@RequestBody SignUpDeleteRequest signUpDeleteRequest) {
         signUpDeleteRequest.setMemberId(getLoginUserId());
         signUpService.cancel(signUpDeleteRequest);
+    }
+
+    @ApiOperation(value = "获取报名信息", notes = "获取报名信息", httpMethod = "GET")
+    @GetMapping(value = "/public-api/sign-up")
+    public SignUpResponse get(SignUpGetRequest signUpGetRequest) {
+        try{
+            getLoginUserId();
+        }catch (Exception e) {
+            return null;
+        }
+        return signUpService.get(signUpGetRequest);
     }
 
 }

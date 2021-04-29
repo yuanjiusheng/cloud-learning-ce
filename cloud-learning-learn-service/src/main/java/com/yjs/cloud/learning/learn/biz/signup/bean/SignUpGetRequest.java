@@ -1,4 +1,4 @@
-package com.yjs.cloud.learning.learn.biz.lesson.bean;
+package com.yjs.cloud.learning.learn.biz.signup.bean;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -6,7 +6,7 @@ import lombok.Data;
 
 /**
  * <p>
- * 请求
+ * 报名
  * </p>
  *
  * @author bill.lai
@@ -14,12 +14,12 @@ import lombok.Data;
  */
 @ApiModel
 @Data
-public class LessonGetRequest {
+public class SignUpGetRequest {
 
-    @ApiModelProperty(value = "id", required = true)
+    @ApiModelProperty(value = "报名id")
     private Long id;
 
-    @ApiModelProperty(value = "会员id")
-    private Long memberId;
+    @ApiModelProperty(value = "课程ID")
+    private Long lessonId;
 
 }

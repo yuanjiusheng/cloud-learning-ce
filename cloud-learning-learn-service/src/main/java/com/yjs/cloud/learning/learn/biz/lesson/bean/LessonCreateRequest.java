@@ -49,6 +49,12 @@ public class LessonCreateRequest {
     @ApiModelProperty(value = "分类id列表", required = true)
     private List<Long> cidList;
 
+    @ApiModelProperty(value = "作业内容")
+    private String homework;
+
+    @ApiModelProperty(value = "作业附件")
+    private String homeworkAttachment;
+
     public Lesson convert() {
         Lesson entity = new Lesson();
         BeanCopierUtils.copy(this, entity);

@@ -30,6 +30,9 @@ public class LessonChapterSectionCreateRequest {
     @ApiModelProperty(value = "章节id", required = true)
     private Long lessonChapterId;
 
+    @ApiModelProperty(value = "视频时长", required = true)
+    private Long totalTime;
+
     public LessonChapterSection convert() {
         LessonChapterSection entity = new LessonChapterSection();
         BeanCopierUtils.copy(this, entity);

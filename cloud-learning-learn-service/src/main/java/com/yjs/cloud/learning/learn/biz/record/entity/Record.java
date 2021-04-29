@@ -2,6 +2,7 @@ package com.yjs.cloud.learning.learn.biz.record.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.yjs.cloud.learning.learn.biz.record.bean.RecordResponse;
+import com.yjs.cloud.learning.learn.biz.record.enums.RecordStatus;
 import com.yjs.cloud.learning.learn.common.entity.BaseEntity;
 import com.yjs.cloud.learning.learn.common.util.BeanCopierUtils;
 import lombok.Data;
@@ -42,6 +43,16 @@ public class Record extends BaseEntity {
      * 报名ID
      */
     private Long signUpId;
+
+    /**
+     * 最大的学习进度时间
+     */
+    private Long maxProgressTime;
+
+    /**
+     * 状态
+     */
+    private RecordStatus status;
 
     public RecordResponse convert() {
         RecordResponse response = new RecordResponse();

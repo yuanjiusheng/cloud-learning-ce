@@ -66,6 +66,7 @@ public class LessonChapterSectionServiceImpl extends BaseServiceImpl<LessonChapt
         lessonChapterSection.setPhrase(lessonChapterSectionUpdateRequest.getPhrase());
         lessonChapterSection.setTitle(lessonChapterSectionUpdateRequest.getTitle());
         lessonChapterSection.setUrl(lessonChapterSectionUpdateRequest.getUrl());
+        lessonChapterSection.setTotalTime(lessonChapterSectionUpdateRequest.getTotalTime());
         updateById(lessonChapterSection);
         return lessonChapterSection.convert();
     }

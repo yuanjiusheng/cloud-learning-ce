@@ -19,7 +19,7 @@ import org.apache.ibatis.annotations.Select;
 public interface LessonMapper extends IBaseMapper<Lesson> {
 
     @Select({"<script>" ,
-            "select distinct l.id, l.name, l.code, l.start_time, l.end_time, l.image, l.status, l.phrase, l.introduction, l.create_time, l.update_time " +
+            "select distinct l.id, l.name, l.code, l.start_time, l.end_time, l.image, l.status, l.phrase, l.introduction, l.homework, l.homework_attachment, l.create_time, l.update_time " +
             "from t_lesson l " +
             "join t_lesson_category_relation lcr on lcr.lesson_id = l.id " ,
             "where 1 = 1 " ,

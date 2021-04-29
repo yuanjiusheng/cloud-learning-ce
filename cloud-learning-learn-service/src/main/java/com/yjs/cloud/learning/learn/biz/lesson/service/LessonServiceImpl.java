@@ -33,6 +33,7 @@ import com.yjs.cloud.learning.learn.common.service.BaseServiceImpl;
 import com.yjs.cloud.learning.learn.common.util.RandomUtils;
 import com.yjs.cloud.learning.learn.common.web.GlobalException;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -59,7 +60,9 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
     private final FavoriteApi favoriteApi;
     private final LikeApi likeApi;
     private final CommentApi commentApi;
+    @Lazy
     private final SignUpService signUpService;
+    @Lazy
     private final RecordService recordService;
 
     /**
@@ -72,6 +75,9 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
     public LessonResponse create(LessonCreateRequest lessonCreateRequest) {
         Lesson lesson = lessonCreateRequest.convert();
         lesson.setCode(RandomUtils.number(0L));
+        if (lesson.getHomework() == null) {
+            lesson.setHomework("");
+        }
         save(lesson);
         // 保存分类
         lessonCategoryRelationService.create(lesson.getId(), lessonCreateRequest.getCidList());
@@ -91,6 +97,9 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
             throw new GlobalException("该课程不存在");
         }
         Lesson updateLesson = lessonUpdateRequest.convert();
+        if (lesson.getHomework() == null) {
+            lesson.setHomework("");
+        }
         updateById(updateLesson);
         lessonCategoryRelationService.update(lesson.getId(), lessonUpdateRequest.getCidList());
         return updateLesson.convert();
@@ -238,13 +247,15 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
         response.setFavoriteNum(favoriteMap.get(response.getId()));
         // 学习人数
         response.setLearnNum(learnMap.get(response.getId()));
-        // 获取报名记录
-        SignUpResponse signUpResponse = signUpService.getByLessonId(response.getId());
-        response.setSignUp(signUpResponse);
-        // 获取学习进度
-        if (signUpResponse != null) {
-            List<RecordResponse> recordList = recordService.getByLessonIdAndSignUpId(response.getId(), signUpResponse.getId());
-            response.setRecordList(recordList);
+        if (lessonGetRequest.getMemberId() != null) {
+            // 获取报名记录
+            SignUpResponse signUpResponse = signUpService.getByLessonId(response.getId(), lessonGetRequest.getMemberId());
+            response.setSignUp(signUpResponse);
+            // 获取学习进度
+            if (signUpResponse != null) {
+                List<RecordResponse> recordList = recordService.getByLessonIdAndSignUpId(response.getId(), signUpResponse.getId());
+                response.setRecordList(recordList);
+            }
         }
         return response;
     }
@@ -266,7 +277,7 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
         for (FavoriteResponse favoriteResponse : favoritePageList.getList()) {
             topicIdList.add(favoriteResponse.getTopicId());
         }
-        return getByIdList(topicIdList, lessonFavoriteListRequest, favoritePageList);
+        return getByIdList(topicIdList, lessonFavoriteListRequest, favoritePageList, lessonFavoriteListRequest.getMemberId());
     }
 
     private Map<Long, Long> getFavoriteMap(List<Long> topicIdList) {
@@ -324,7 +335,7 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
         return learnMap;
     }
 
-    private LessonListResponse getByIdList(List<Long> topicIdList, PageRequest pageRequest, PageResponse pageResponse) {
+    private LessonListResponse getByIdList(List<Long> topicIdList, PageRequest pageRequest, PageResponse pageResponse, Long memberId) {
         LessonListResponse lessonListResponse = new LessonListResponse();
         lessonListResponse.setCurrent(pageRequest.getCurrent());
         lessonListResponse.setSize(pageRequest.getSize());
@@ -356,6 +367,11 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
             response.setFavoriteNum(favoriteMap.get(response.getId()));
             // 学习人数
             response.setLearnNum(learnMap.get(response.getId()));
+            if (memberId != null) {
+                // 获取报名记录
+                SignUpResponse signUpResponse = signUpService.getByLessonId(response.getId(), memberId);
+                response.setSignUp(signUpResponse);
+            }
             result.add(response);
         }
         lessonListResponse.setPages(pageResponse.getPages());
@@ -380,6 +396,7 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
         for (SignUpResponse signUpResponse : signUpPageList.getList()) {
             topicIdList.add(signUpResponse.getLessonId());
         }
-        return getByIdList(topicIdList, signUpGetPageListRequest, signUpPageList);
+        return getByIdList(topicIdList, signUpGetPageListRequest, signUpPageList, lessonLearnListRequest.getMemberId());
     }
+
 }

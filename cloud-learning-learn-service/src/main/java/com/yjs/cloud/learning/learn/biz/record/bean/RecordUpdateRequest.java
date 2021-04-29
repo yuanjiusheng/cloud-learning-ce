@@ -32,4 +32,7 @@ public class RecordUpdateRequest {
     @ApiModelProperty(value = "报名ID")
     private Long signUpId;
 
+    @ApiModelProperty(value = "最大学习进度时间")
+    private Long maxProgressTime;
+
 }

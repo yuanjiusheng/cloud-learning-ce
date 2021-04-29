@@ -1,6 +1,7 @@
 package com.yjs.cloud.learning.learn.biz.record.bean;
 
 import com.yjs.cloud.learning.learn.biz.record.entity.Record;
+import com.yjs.cloud.learning.learn.biz.record.enums.RecordStatus;
 import com.yjs.cloud.learning.learn.common.util.BeanCopierUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -30,6 +31,12 @@ public class RecordCreateRequest {
 
     @ApiModelProperty(value = "报名ID")
     private Long signUpId;
+
+    @ApiModelProperty(value = "最大学习进度时间")
+    private Long maxProgressTime;
+
+    @ApiModelProperty(value = "状态", hidden = true)
+    private RecordStatus status = RecordStatus.progressing;
 
     public Record convert() {
         Record entity = new Record();

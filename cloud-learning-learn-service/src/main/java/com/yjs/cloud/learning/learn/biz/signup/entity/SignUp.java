@@ -8,6 +8,8 @@ import com.yjs.cloud.learning.learn.common.util.BeanCopierUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
+
 /**
  * <p>
  * 报名
@@ -37,6 +39,11 @@ public class SignUp extends BaseEntity {
      * 报名状态
      */
     private SignUpStatus status;
+
+    /**
+     * 完成时间
+     */
+    private LocalDateTime completedTime;
 
     public SignUpResponse convert() {
         SignUpResponse response = new SignUpResponse();
