@@ -2,6 +2,7 @@ package com.yjs.cloud.learning.oss.biz.aliyun.web;
 
 import com.yjs.cloud.learning.oss.biz.aliyun.bean.DeleteFileRequest;
 import com.yjs.cloud.learning.oss.biz.aliyun.service.AliYunOssService;
+import com.yjs.cloud.learning.oss.common.util.DateUtils;
 import com.yjs.cloud.learning.oss.common.util.StringUtils;
 import com.yjs.cloud.learning.oss.common.web.GlobalException;
 import io.swagger.annotations.*;
@@ -9,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -32,7 +34,7 @@ public class AliYunOssController {
             @ApiImplicitParam(name = "module", paramType = "path", dataType = "String", value = "模块名"),
             @ApiImplicitParam(name = "fileType", paramType = "path", dataType = "文件类型", value = "模块名")
     })
-    @PostMapping(value = {"/{service}/{module}/{fileType}", "/{service}/{fileType}"})
+    @PostMapping(value = {"/auth-api/{service}/{module}/{fileType}", "/{service}/{module}/{fileType}", "/{service}/{fileType}", "/auth-api/{service}/{fileType}"})
     public String upload(@RequestParam("file") MultipartFile file,
                          @PathVariable("service") String service,
                          @PathVariable(value = "fileType", required = false) String fileType,
@@ -52,7 +54,7 @@ public class AliYunOssController {
             fileType = "image/";
         }
         String path = "test/" + service + "/" + module + "/" + fileType;
-        return aliYunOssService.upload(file, path + System.currentTimeMillis() + new Random().nextInt());
+        return aliYunOssService.upload(file, path + DateUtils.parseString(new Date(), "yyyy-MM-dd") + file.getResource().getFilename());
     }
 
     @ApiOperation(value = "文件删除", notes = "文件删除", httpMethod = "DELETE")
