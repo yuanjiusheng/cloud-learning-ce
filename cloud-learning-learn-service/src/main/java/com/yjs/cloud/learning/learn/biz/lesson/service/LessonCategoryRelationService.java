@@ -4,6 +4,7 @@ import com.yjs.cloud.learning.learn.biz.lesson.entity.LessonCategoryRelation;
 import com.yjs.cloud.learning.learn.common.service.IBaseService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -41,4 +42,11 @@ public interface LessonCategoryRelationService extends IBaseService<LessonCatego
      * @return 课程与分类关系
      */
     List<LessonCategoryRelation> getByLessonIdList(List<Long> lessonIdList);
+
+    /**
+     * 根据课程id列表获取课程与分类关系
+     * @param lessonIdList 参数
+     * @return 课程与分类关系
+     */
+    Map<Long, List<Long>> getCidMap(List<Long> lessonIdList);
 }

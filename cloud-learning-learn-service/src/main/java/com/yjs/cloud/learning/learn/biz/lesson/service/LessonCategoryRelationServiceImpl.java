@@ -8,7 +8,10 @@ import com.yjs.cloud.learning.learn.common.web.GlobalException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -71,6 +74,24 @@ public class LessonCategoryRelationServiceImpl extends BaseServiceImpl<LessonCat
         LambdaQueryWrapper<LessonCategoryRelation> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.in(LessonCategoryRelation::getLessonId, lessonIdList);
         return list(lambdaQueryWrapper);
+    }
+
+    /**
+     * 根据课程id列表获取课程与分类关系
+     * @param lessonIdList 参数
+     * @return 课程与分类关系
+     */
+    @Override
+    public Map<Long, List<Long>> getCidMap(List<Long> lessonIdList) {
+        List<LessonCategoryRelation> lessonCategoryRelationList = getByLessonIdList(lessonIdList);
+        Map<Long, List<Long>> lessonCategoryRelationMap = new HashMap<>(16);
+        if (!CollectionUtils.isEmpty(lessonCategoryRelationList)) {
+            for (LessonCategoryRelation lessonCategoryRelation : lessonCategoryRelationList) {
+                List<Long> lessonCategoryIdList = lessonCategoryRelationMap.computeIfAbsent(lessonCategoryRelation.getLessonId(), k -> new ArrayList<>());
+                lessonCategoryIdList.add(lessonCategoryRelation.getCategoryId());
+            }
+        }
+        return lessonCategoryRelationMap;
     }
 
 }

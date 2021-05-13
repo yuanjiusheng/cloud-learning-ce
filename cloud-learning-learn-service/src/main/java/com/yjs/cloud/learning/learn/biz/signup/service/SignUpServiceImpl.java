@@ -34,6 +34,7 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -104,14 +105,23 @@ public class SignUpServiceImpl extends BaseServiceImpl<SignUpMapper, SignUp> imp
         }
     }
 
-    /**
-     * 获取课程学习人数统计列表
-     * @param signUpCountListRequest 参数
-     * @return 课程学习人数统计列表
-     */
     @Override
     public List<SignUpCountResponse> getCountList(SignUpCountListRequest signUpCountListRequest) {
         return signUpMapper.countList(signUpCountListRequest);
+    }
+
+    @Override
+    public Map<Long, Long> getLessonLearnNumMap(List<Long> topicIdList) {
+        SignUpCountListRequest signUpCountListRequest = new SignUpCountListRequest();
+        signUpCountListRequest.setLessonIdList(topicIdList);
+        List<SignUpCountResponse> learnCountList = getCountList(signUpCountListRequest);
+        Map<Long, Long> learnMap = new HashMap<>(16);
+        if (!CollectionUtils.isEmpty(learnCountList)) {
+            for (SignUpCountResponse signUpCountResponse : learnCountList) {
+                learnMap.put(signUpCountResponse.getLessonId(), signUpCountResponse.getNum());
+            }
+        }
+        return learnMap;
     }
 
     /**

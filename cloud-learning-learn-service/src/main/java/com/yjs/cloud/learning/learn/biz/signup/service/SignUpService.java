@@ -7,6 +7,7 @@ import com.yjs.cloud.learning.learn.biz.signup.entity.SignUp;
 import com.yjs.cloud.learning.learn.common.service.IBaseService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 报名服务
@@ -35,6 +36,13 @@ public interface SignUpService extends IBaseService<SignUp> {
      * @return 课程学习人数统计列表
      */
     List<SignUpCountResponse> getCountList(SignUpCountListRequest signUpCountListRequest);
+
+    /**
+     * 获取课程学习人数统计列表
+     * @param topicIdList 参数
+     * @return 课程学习人数统计列表
+     */
+    Map<Long, Long> getLessonLearnNumMap(List<Long> topicIdList);
 
     /**
      * 获取学习记录列表

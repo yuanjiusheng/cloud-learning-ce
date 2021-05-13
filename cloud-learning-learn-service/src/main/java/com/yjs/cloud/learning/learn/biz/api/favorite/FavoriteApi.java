@@ -5,12 +5,16 @@ import com.yjs.cloud.learning.learn.biz.api.favorite.bean.FavoriteCountListReque
 import com.yjs.cloud.learning.learn.biz.api.favorite.bean.FavoriteCountResponse;
 import com.yjs.cloud.learning.learn.biz.api.favorite.bean.FavoriteGetPageListRequest;
 import com.yjs.cloud.learning.learn.biz.api.favorite.bean.FavoriteGetPageListResponse;
+import com.yjs.cloud.learning.learn.biz.api.favorite.enums.FavoriteTopicType;
 import com.yjs.cloud.learning.learn.common.request.service.RequestService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 会员api
@@ -43,4 +47,17 @@ public class FavoriteApi {
         return requestService.list("/comment/public-api/favorite/count", JSON.parseObject(JSON.toJSONString(favoriteCountListRequest)), FavoriteCountResponse.class);
     }
 
+    public Map<Long, Long> getFavoriteMap(List<Long> topicIdList, FavoriteTopicType type) {
+        FavoriteCountListRequest favoriteCountListRequest = new FavoriteCountListRequest();
+        favoriteCountListRequest.setTopicType(type);
+        favoriteCountListRequest.setTopicIdList(topicIdList);
+        List<FavoriteCountResponse> countList = getCountList(favoriteCountListRequest);
+        Map<Long, Long> favoriteMap = new HashMap<>(16);
+        if (!CollectionUtils.isEmpty(countList)) {
+            for (FavoriteCountResponse favoriteCountResponse : countList) {
+                favoriteMap.put(favoriteCountResponse.getTopicId(), favoriteCountResponse.getNum());
+            }
+        }
+        return favoriteMap;
+    }
 }
