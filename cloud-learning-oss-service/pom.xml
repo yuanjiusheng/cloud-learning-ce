@@ -53,18 +53,6 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-		<!-- NaCos -->
-		<dependency>
-			<groupId>com.alibaba.cloud</groupId>
-			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-			<version>${spring.cloud.alibaba.nacos.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.alibaba.cloud</groupId>
-			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-			<version>${spring.cloud.alibaba.nacos.version}</version>
-		</dependency>
-
 		<!-- swagger -->
 		<dependency>
 			<groupId>io.springfox</groupId>

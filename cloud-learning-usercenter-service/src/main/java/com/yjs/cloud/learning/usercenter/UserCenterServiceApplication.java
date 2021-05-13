@@ -3,7 +3,6 @@ package com.yjs.cloud.learning.usercenter;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @MapperScan("com.yjs.cloud.learning.usercenter.**.mapper")
 @EnableTransactionManagement
-@EnableDiscoveryClient
 public class UserCenterServiceApplication {
 
 	public static void main(String[] args) {

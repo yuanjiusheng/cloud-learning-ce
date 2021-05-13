@@ -3,13 +3,7 @@ spring:
         active: dev # options: prod，dev，test
     application:
         name: cloud-learning-community-behavior-service
-    jackson:
-        date-format: yyyy-MM-dd HH:mm:ss
-        time-zone: GMT+8
-    cloud:
-        nacos:
-            discovery:
-                server-addr: 127.0.0.1:8848
+
 mybatis-plus:
     global-config:
         field-strategy: 2

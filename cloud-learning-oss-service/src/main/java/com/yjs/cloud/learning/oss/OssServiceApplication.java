@@ -3,7 +3,6 @@ package com.yjs.cloud.learning.oss;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @MapperScan("com.yjs.cloud.learning.oss.**.mapper")
 @EnableTransactionManagement
-@EnableDiscoveryClient
 public class OssServiceApplication {
 
 	public static void main(String[] args) {
