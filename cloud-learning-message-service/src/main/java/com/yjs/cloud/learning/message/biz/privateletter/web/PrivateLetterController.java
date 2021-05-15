@@ -41,18 +41,34 @@ public class PrivateLetterController extends BaseController {
         return privateLetterService.get(privateLetterGetRequest);
     }
 
-    @ApiOperation(value = "获取会员的私信列表", notes = "获取会员的私信列表", httpMethod = "GET")
+    @ApiOperation(value = "获取私信会员列表", notes = "获取私信会员列表", httpMethod = "GET")
     @GetMapping("/auth-api/private-letter/member/list")
     public PrivateLetterGetMemberListResponse getMemberList(PrivateLetterGetMemberListRequest privateLetterGetMemberListRequest) {
         privateLetterGetMemberListRequest.setMemberId(getLoginUserId());
         return privateLetterService.getMemberList(privateLetterGetMemberListRequest);
     }
 
+    @ApiOperation(value = "获取私信会员", notes = "获取私信会员", httpMethod = "GET")
+    @GetMapping("/auth-api/private-letter/member")
+    public PrivateLetterResponse getMember(PrivateLetterGetMemberRequest privateLetterGetMemberRequest) {
+        privateLetterGetMemberRequest.setSenderId(getLoginUserId());
+        return privateLetterService.getByMember(privateLetterGetMemberRequest);
+    }
+
     @ApiOperation(value = "获取私信内容列表", notes = "获取私信内容列表", httpMethod = "GET")
     @GetMapping("/auth-api/private-letter/list")
-    public PrivateLetterGetSenderListResponse getSenderList(PrivateLetterGetSenderListRequest privateLetterGetSenderListRequest) {
+    public PrivateLetterGetSenderListResponse getLetterList(PrivateLetterGetSenderListRequest privateLetterGetSenderListRequest) {
         privateLetterGetSenderListRequest.setMemberId(getLoginUserId());
         PrivateLetterGetSenderListResponse response = privateLetterService.getLetterList(privateLetterGetSenderListRequest);
+        response.setCurrentUserId(getLoginUserId());
+        return response;
+    }
+
+    @ApiOperation(value = "获取最新私信内容列表", notes = "获取最新私信内容列表", httpMethod = "GET")
+    @GetMapping("/auth-api/private-letter/new/list")
+    public PrivateLetterGetSenderListResponse getNewLetterList(PrivateLetterGetSenderListRequest privateLetterGetSenderListRequest) {
+        privateLetterGetSenderListRequest.setMemberId(getLoginUserId());
+        PrivateLetterGetSenderListResponse response = privateLetterService.getNewLetterList(privateLetterGetSenderListRequest);
         response.setCurrentUserId(getLoginUserId());
         return response;
     }

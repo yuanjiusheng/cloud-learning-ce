@@ -23,4 +23,7 @@ public class PrivateLetterGetSenderListRequest extends PageRequest {
     @ApiModelProperty(value = "聊天会员id")
     private Long senderId;
 
+    @ApiModelProperty(value = "最小聊天id")
+    private Long id = 0L;
+
 }

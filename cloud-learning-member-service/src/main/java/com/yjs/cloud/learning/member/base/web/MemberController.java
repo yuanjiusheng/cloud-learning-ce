@@ -1,6 +1,7 @@
 package com.yjs.cloud.learning.member.base.web;
 
 import com.yjs.cloud.learning.member.base.bean.*;
+import com.yjs.cloud.learning.member.base.entity.Member;
 import com.yjs.cloud.learning.member.base.service.MemberLevelRelationService;
 import com.yjs.cloud.learning.member.base.service.MemberService;
 import com.yjs.cloud.learning.member.common.util.StringUtils;
@@ -11,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -125,6 +127,38 @@ public class MemberController {
             throw new GlobalException("ids为必填项");
         }
         return memberService.getByIds(memberGetByIdsRequest.getIds());
+    }
+
+    @ApiOperation(value = "获取会员信息", notes = "获取会员信息", httpMethod = "GET")
+    @GetMapping("/auth-api/by-id")
+    public MemberResponse getById(MemberGetRequest memberGetRequest) {
+        if (memberGetRequest.getId() == null) {
+            throw new GlobalException("id为必填项");
+        }
+        Member member = memberService.getById(memberGetRequest.getId());
+        MemberResponse response = new MemberResponse();
+        response.setId(member.getId());
+        response.setName(member.getName());
+        response.setAvatar(member.getAvatar());
+        return response;
+    }
+
+    @ApiOperation(value = "获取会员信息", notes = "获取会员信息", httpMethod = "GET")
+    @GetMapping("/auth-api/list")
+    public MemberGetPageResponse getAuthList(MemberGetPageRequest memberGetPageRequest) {
+        MemberGetPageResponse pageResponse = memberService.findList(memberGetPageRequest);
+        if (pageResponse.getList() != null) {
+            List<MemberResponse> list = new ArrayList<>();
+            for (MemberResponse member : pageResponse.getList()) {
+                MemberResponse response = new MemberResponse();
+                response.setId(member.getId());
+                response.setName(member.getName());
+                response.setAvatar(member.getAvatar());
+                list.add(response);
+            }
+            pageResponse.setList(list);
+        }
+        return pageResponse;
     }
 
     @ApiOperation(value = "更新会员等级", notes = "更新会员等级", httpMethod = "PUT")

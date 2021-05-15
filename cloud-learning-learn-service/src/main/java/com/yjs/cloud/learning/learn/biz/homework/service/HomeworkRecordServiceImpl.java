@@ -13,8 +13,10 @@ import com.yjs.cloud.learning.learn.common.service.BaseServiceImpl;
 import com.yjs.cloud.learning.learn.common.web.GlobalException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -95,7 +97,10 @@ public class HomeworkRecordServiceImpl extends BaseServiceImpl<HomeworkRecordMap
         for (HomeworkRecord homeworkRecord : page.getRecords()) {
             memberIdList.add(homeworkRecord.getMemberId());
         }
-        Map<Long, MemberResponse> memberMap = memberApi.getMemberMap(memberIdList);
+        Map<Long, MemberResponse> memberMap = new HashMap<>(16);
+        if (!CollectionUtils.isEmpty(memberIdList)) {
+            memberMap = memberApi.getMemberMap(memberIdList);
+        }
         for (HomeworkRecord homeworkRecord : page.getRecords()) {
             HomeworkRecordResponse response = homeworkRecord.convert();
             response.setMember(memberMap.get(homeworkRecord.getMemberId()));

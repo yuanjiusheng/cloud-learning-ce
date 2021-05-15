@@ -18,11 +18,6 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<spring-cloud.version>Hoxton.SR6</spring-cloud.version>
-		<spring-boot.version>2.3.2.RELEASE</spring-boot.version>
-		<spring.cloud.alibaba.version>2.2.1.RELEASE</spring.cloud.alibaba.version>
-		<spring.cloud.alibaba.nacos.version>2.2.1.RELEASE</spring.cloud.alibaba.nacos.version>
-		<mybatis-plus.version>3.3.2</mybatis-plus.version>
-		<liquibase.version>4.0.0</liquibase.version>
 		<springfox-swagger2.version>3.0.0</springfox-swagger2.version>
 		<swagger.ui.version>1.9.6</swagger.ui.version>
 	</properties>
@@ -33,13 +28,6 @@
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
 				<version>${spring-cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.alibaba.cloud</groupId>
-				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
-				<version>${spring.cloud.alibaba.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

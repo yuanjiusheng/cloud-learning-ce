@@ -2,6 +2,7 @@ package com.yjs.cloud.learning.oss.biz.aliyun.web;
 
 import com.yjs.cloud.learning.oss.biz.aliyun.bean.DeleteFileRequest;
 import com.yjs.cloud.learning.oss.biz.aliyun.service.AliYunOssService;
+import com.yjs.cloud.learning.oss.biz.local.service.LocalService;
 import com.yjs.cloud.learning.oss.common.util.DateUtils;
 import com.yjs.cloud.learning.oss.common.util.StringUtils;
 import com.yjs.cloud.learning.oss.common.web.GlobalException;
@@ -27,6 +28,7 @@ import java.util.Random;
 public class AliYunOssController {
 
     private final AliYunOssService aliYunOssService;
+    private final LocalService localService;
 
     @ApiOperation(value = "文件上传", notes = "文件上传", httpMethod = "POST")
     @ApiImplicitParams({
@@ -47,14 +49,16 @@ public class AliYunOssController {
         }
         if (module != null) {
             module = module + "/";
+        } else {
+            module = "/";
         }
         if (fileType != null) {
             fileType = fileType + "/";
         } else {
             fileType = "image/";
         }
-        String path = "test/" + service + "/" + module + "/" + fileType;
-        return aliYunOssService.upload(file, path + DateUtils.parseString(new Date(), "yyyy-MM-dd") + file.getResource().getFilename());
+        String path = service + "/" + module + fileType;
+        return localService.upload(file, path + DateUtils.parseString(new Date(), "yyyy-MM-dd") + "-" + file.getResource().getFilename());
     }
 
     @ApiOperation(value = "文件删除", notes = "文件删除", httpMethod = "DELETE")

@@ -41,9 +41,23 @@ public interface PrivateLetterService extends IBaseService<PrivateLetter> {
     PrivateLetterGetMemberListResponse getMemberList(PrivateLetterGetMemberListRequest privateLetterGetMemberListRequest);
 
     /**
+     * 获取会员的私信
+     * @param privateLetterGetMemberRequest 请求参数
+     * @return 会员私信
+     */
+    PrivateLetterResponse getByMember(PrivateLetterGetMemberRequest privateLetterGetMemberRequest);
+
+    /**
      * 获取私信内容列表
      * @param privateLetterGetSenderListRequest 请求参数
      * @return 私信信息列表
      */
     PrivateLetterGetSenderListResponse getLetterList(PrivateLetterGetSenderListRequest privateLetterGetSenderListRequest);
+
+    /**
+     * 获取最新私信内容列表
+     * @param privateLetterGetSenderListRequest 请求参数
+     * @return 私信信息列表
+     */
+    PrivateLetterGetSenderListResponse getNewLetterList(PrivateLetterGetSenderListRequest privateLetterGetSenderListRequest);
 }

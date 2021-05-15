@@ -49,6 +49,7 @@ public class PrivateLetterServiceImpl extends BaseServiceImpl<PrivateLetterMappe
         PrivateLetter privateLetter = privateLetterCreateRequest.convert();
         privateLetter.setStatus(PrivateLetterStatus.normal);
         save(privateLetter);
+        privateLetter = getById(privateLetter.getId());
         PrivateLetterResponse response = privateLetter.convert();
         List<Long> userIdList = new ArrayList<>();
         userIdList.add(privateLetter.getSenderId());
@@ -123,10 +124,44 @@ public class PrivateLetterServiceImpl extends BaseServiceImpl<PrivateLetterMappe
     }
 
     @Override
+    public PrivateLetterResponse getByMember(PrivateLetterGetMemberRequest privateLetterGetMemberRequest) {
+        // 获取会员id 与 私信id
+        PrivateLetterResponse privateLetterResponse = privateLetterMapper.getMember(privateLetterGetMemberRequest);
+        // 查询会员信息
+        List<Long> senderIdList = new ArrayList<>();
+        if (privateLetterResponse != null) {
+            // 获取私信信息
+            PrivateLetter privateLetter = getById(privateLetterResponse.getId());
+            privateLetterResponse = privateLetter.convert();
+            senderIdList.add(privateLetterGetMemberRequest.getMemberId());
+            Map<Long, MemberResponse> memberMap = memberApi.getMemberMap(senderIdList);
+            privateLetterResponse.setSender(memberMap.get(privateLetterGetMemberRequest.getMemberId()));
+        } else {
+            privateLetterResponse = new PrivateLetterResponse();
+            senderIdList.add(privateLetterGetMemberRequest.getMemberId());
+            Map<Long, MemberResponse> memberMap = memberApi.getMemberMap(senderIdList);
+            privateLetterResponse.setSender(memberMap.get(privateLetterGetMemberRequest.getMemberId()));
+        }
+        return privateLetterResponse;
+    }
+
+    @Override
     public PrivateLetterGetSenderListResponse getLetterList(PrivateLetterGetSenderListRequest privateLetterGetSenderListRequest) {
         Page<PrivateLetterResponse> page = new Page<>(privateLetterGetSenderListRequest.getCurrent(), privateLetterGetSenderListRequest.getSize());
         // 获取私信列表
         page = privateLetterMapper.getLetterList(page, privateLetterGetSenderListRequest);
+        return formatLetterList(page);
+    }
+
+    @Override
+    public PrivateLetterGetSenderListResponse getNewLetterList(PrivateLetterGetSenderListRequest privateLetterGetSenderListRequest) {
+        Page<PrivateLetterResponse> page = new Page<>(privateLetterGetSenderListRequest.getCurrent(), privateLetterGetSenderListRequest.getSize());
+        // 获取私信列表
+        page = privateLetterMapper.getNewLetterList(page, privateLetterGetSenderListRequest);
+        return formatLetterList(page);
+    }
+
+    private PrivateLetterGetSenderListResponse formatLetterList(Page<PrivateLetterResponse> page) {
         if (!CollectionUtils.isEmpty(page.getRecords())) {
             List<Long> senderIdList = new ArrayList<>();
             for (PrivateLetterResponse privateLetter : page.getRecords()) {
