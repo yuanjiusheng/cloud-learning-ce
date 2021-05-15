@@ -3,14 +3,10 @@ spring:
         active: dev # options: prod，dev，test
     application:
         name: cloud-learning-community-oss-service
-    cloud:
-        nacos:
-            discovery:
-                server-addr: 127.0.0.1:8848
     servlet:
         multipart:
-            max-file-size: 5MB
-            max-request-size: 10MB
+            max-file-size: 50MB
+            max-request-size: 50MB
 
 mybatis-plus:
     global-config:
@@ -43,3 +39,7 @@ server:
 gateway:
     service:
         url: http://localhost:5500
+
+# 本地保存文件文件夹
+local:
+    file-dir: /Users/mac/Desktop/j
