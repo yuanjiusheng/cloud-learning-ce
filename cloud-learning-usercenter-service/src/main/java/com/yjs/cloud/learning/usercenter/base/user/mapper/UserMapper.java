@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yjs.cloud.learning.usercenter.base.user.bean.UserGetListRequest;
 import com.yjs.cloud.learning.usercenter.base.user.bean.UserResponse;
 import com.yjs.cloud.learning.usercenter.base.user.entity.User;
-import com.yjs.cloud.learning.usercenter.base.user.entity.UserVo;
 import com.yjs.cloud.learning.usercenter.common.mapper.IBaseMapper;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
@@ -153,39 +152,6 @@ public interface UserMapper extends IBaseMapper<User> {
             "join t_post p on p.id = up.post_id " +
             "where u.state in (0, 1, 3) and u.id=#{userId}")
     User selectUserById(@Param("userId") Long userId);
-
-    /**
-     * 获取店铺（部门）的所有员工
-     * @param departmentId 店铺（部门）id
-     * @param userId 用户id
-     * @param searchFullName 用户名称搜索关键字
-     * @param searchName 搜索登录名
-     * @return 员工信息列表
-     */
-    @Select({"<script>" ,
-            "select tu.id user_id, tu.full_name user_name, td.name department_name, tp.full_name post_name, tu.start_date " +
-            " from t_user tu " +
-            "inner join t_user_department tud on tu.id = tud.user_id " +
-            "inner join t_department td on td.id = tud.department_id " +
-            "inner join t_user_post tup on tu.id = tup.user_id " +
-            "inner join t_post tp on tup.post_id = tp.id " +
-            "where tu.state in (0, 1, 3) " +
-            "   <if test='departmentId != null'>",
-            "       and td.id = #{departmentId} " ,
-            "   </if>",
-            "   <if test='searchFullName != null and searchFullName != \"\"'>",
-            "       and tu.full_name like #{searchFullName} ",
-            "   </if>",
-            "   <if test='searchName != null and searchName != \"\"'>",
-            "       and (tu.name like #{searchName} or tu.id like #{searchName}) ",
-            "   </if>",
-            "   <if test='userId != null'>",
-            "       and tu.id = #{userId} ",
-            "   </if>",
-            "</script>"
-    })
-    List<UserVo> selectUserVo(@Param("departmentId") Long departmentId, @Param("searchFullName") String searchFullName,
-                                            @Param("userId") Long userId, @Param("searchName") String searchName);
 
     /**
      * 根据部门获取用户

@@ -113,6 +113,11 @@ public class User extends BaseEntity {
     @JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
     private LocalDate contractEndDate;
 
+    /**
+     * 头像
+     */
+    private String avatar;
+
     public UserResponse convert() {
         UserResponse userResponse = new UserResponse();
         BeanCopierUtils.copy(this, userResponse);

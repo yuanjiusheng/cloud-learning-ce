@@ -1,12 +1,17 @@
 package com.yjs.cloud.learning.usercenter.base.user.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yjs.cloud.learning.usercenter.base.department.entity.Department;
+import com.yjs.cloud.learning.usercenter.base.department.service.DepartmentService;
 import com.yjs.cloud.learning.usercenter.base.user.bean.UserGetListRequest;
 import com.yjs.cloud.learning.usercenter.base.user.bean.UserGetListResponse;
 import com.yjs.cloud.learning.usercenter.base.user.bean.UserResponse;
+import com.yjs.cloud.learning.usercenter.base.user.bean.UserUpdateRequest;
 import com.yjs.cloud.learning.usercenter.base.user.entity.User;
 import com.yjs.cloud.learning.usercenter.base.user.mapper.UserMapper;
+import com.yjs.cloud.learning.usercenter.common.entity.BaseEntity;
 import com.yjs.cloud.learning.usercenter.common.service.BaseServiceImpl;
 import com.yjs.cloud.learning.usercenter.common.util.StringUtils;
 import com.yjs.cloud.learning.usercenter.common.web.GlobalException;
@@ -27,6 +32,7 @@ import java.util.List;
 public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implements UserService {
 
     private final UserMapper userMapper;
+    private final DepartmentService departmentService;
 
     /**
      * 获取用户
@@ -68,7 +74,17 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         if (user == null) {
             throw new GlobalException(String.format("user mobile[%s] is not found", mobile));
         }
-        return user.convert();
+        Long departmentId = 0L;
+        if (!"admin".equals(user.getUsername())) {
+            Department department = departmentService.getByUserId(user.getId());
+            if (department == null) {
+                throw new GlobalException(String.format("user mobile[%s] department is not found", mobile));
+            }
+            departmentId = department.getId();
+        }
+        UserResponse userResponse = user.convert();
+        userResponse.setDepartmentId(departmentId);
+        return userResponse;
     }
 
     /**
@@ -90,5 +106,48 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         userGetListResponse.setPages(page.getPages());
         userGetListResponse.setTotal(page.getTotal());
         return userGetListResponse;
+    }
+
+    @Override
+    public List<UserResponse> getByIds(List<Long> ids) {
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.in(BaseEntity::getId, ids);
+        List<User> userList = list(lambdaQueryWrapper);
+        List<UserResponse> responseList = new ArrayList<>();
+        for (User user : userList) {
+            responseList.add(user.convert());
+        }
+        return responseList;
+    }
+
+    @Override
+    public UserResponse updateUser(UserUpdateRequest userUpdateRequest) {
+        if (userUpdateRequest.getId() == null) {
+            throw new GlobalException("ID为必填项");
+        }
+        User user = getById(userUpdateRequest.getId());
+        if (user == null) {
+            throw new GlobalException("找不到用户信息");
+        }
+        if (!StringUtils.isEmpty(userUpdateRequest.getName())) {
+            user.setName(userUpdateRequest.getName());
+        }
+        if (!StringUtils.isEmpty(userUpdateRequest.getEmail())) {
+            user.setEmail(userUpdateRequest.getEmail());
+        }
+        if (!StringUtils.isEmpty(userUpdateRequest.getMobile())) {
+            user.setMobile(userUpdateRequest.getMobile());
+        }
+        if (!StringUtils.isEmpty(userUpdateRequest.getAvatar())) {
+            user.setAvatar(userUpdateRequest.getAvatar());
+        }
+        if (!StringUtils.isEmpty(userUpdateRequest.getPassword())) {
+            if(!user.getPassword().equals(userUpdateRequest.getOldPassword())) {
+                throw new GlobalException("旧密码不正确");
+            }
+            user.setPassword(userUpdateRequest.getPassword());
+        }
+        updateById(user);
+        return user.convert();
     }
 }

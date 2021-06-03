@@ -79,9 +79,12 @@ public class UserResponse extends BaseResponse {
     private LocalDate contractEndDate;
 
     @ApiModelProperty(value = "部门id")
-    private String departmentId;
+    private Long departmentId;
 
     @ApiModelProperty(value = "部门名称")
     private String departmentName;
+
+    @ApiModelProperty(value = "头像")
+    private String avatar;
 
 }

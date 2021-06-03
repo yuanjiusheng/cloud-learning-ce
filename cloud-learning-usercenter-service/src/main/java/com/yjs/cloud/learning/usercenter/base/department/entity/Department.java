@@ -1,6 +1,9 @@
 package com.yjs.cloud.learning.usercenter.base.department.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.yjs.cloud.learning.usercenter.base.department.bean.DepartmentResponse;
 import com.yjs.cloud.learning.usercenter.common.entity.BaseEntity;
+import com.yjs.cloud.learning.usercenter.common.util.BeanCopierUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,6 +15,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@TableName("t_department")
 public class Department extends BaseEntity {
 
     /**
@@ -29,4 +33,9 @@ public class Department extends BaseEntity {
      */
     private Boolean enabled;
 
+    public DepartmentResponse convert() {
+        DepartmentResponse response = new DepartmentResponse();
+        BeanCopierUtils.copy(this, response);
+        return response;
+    }
 }

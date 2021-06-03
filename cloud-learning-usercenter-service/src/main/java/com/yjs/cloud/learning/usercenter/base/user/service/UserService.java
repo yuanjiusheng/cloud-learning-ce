@@ -3,6 +3,7 @@ package com.yjs.cloud.learning.usercenter.base.user.service;
 import com.yjs.cloud.learning.usercenter.base.user.bean.UserGetListRequest;
 import com.yjs.cloud.learning.usercenter.base.user.bean.UserGetListResponse;
 import com.yjs.cloud.learning.usercenter.base.user.bean.UserResponse;
+import com.yjs.cloud.learning.usercenter.base.user.bean.UserUpdateRequest;
 import com.yjs.cloud.learning.usercenter.base.user.entity.User;
 import com.yjs.cloud.learning.usercenter.common.service.IBaseService;
 
@@ -46,4 +47,19 @@ public interface UserService extends IBaseService<User> {
      * @return 用户列表
      */
     UserGetListResponse findList(UserGetListRequest userGetListRequest);
+
+    /**
+     * 修改用户信息
+     * @param userUpdateRequest 参数
+     * @return 用户信息
+     */
+    UserResponse updateUser(UserUpdateRequest userUpdateRequest);
+
+    /**
+     * 根据id列表获取用户信息
+     * @param ids id列表
+     * @return 用户信息
+     */
+    List<UserResponse> getByIds(List<Long> ids);
+
 }

@@ -37,37 +37,6 @@ public interface DepartmentMapper extends IBaseMapper<Department> {
             "</script>")
     List<DepartmentResponse> findList(@Param("request") DepartmentGetListRequest departmentGetListRequest);
 
-    @Select("select t.id, t.code, t.name, td.dd_id as dingTalkId, t.enabled, t.create_time, t.update_time " +
-            "from t_department t " +
-            "join t_department_dd_id td on td.department_id=t.id" +
-            " where td.dd_id = #{dingTalkDeptId}")
-    Department selectByDingTalkId(@Param("dingTalkDeptId") Long dingTalkDeptId);
-
-    @Select("select t.id, t.code, t.name, td.dd_id as dingTalkId, t.enabled, t.create_time, t.update_time " +
-            " from t_department t" +
-            " left join t_department_dd_id td on td.department_id = t.id" +
-            " where name = #{name} and enabled = 1")
-    Department selectByName(@Param("name") String name);
-
-    @Select({
-            "<script>",
-            "select t.id, t.code, t.name,  td.dd_id as dingTalkId, t.enabled, t.create_time, t.update_time from t_department t",
-            " left join t_department_dd_id td on td.department_id=t.id",
-            " where ",
-            "   t.name in ",
-            "   <foreach collection='nameList' item='item' index='index' open='(' separator=',' close=')'> ",
-            "       #{item} ",
-            "   </foreach>",
-            "</script>"
-    })
-    List<Department> selectByNameList(@Param("nameList") List<String> nameList);
-
-    /**
-     * 删除所有的部门数据
-     */
-    @Delete("delete from t_department")
-    int deleteAll();
-
 
     @Select("select d.id, d.code, d.short_name, d.name, d.create_time, d.update_time from t_department d " +
             "inner join t_user_department tud on tud.department_id = d.id " +
@@ -94,11 +63,6 @@ public interface DepartmentMapper extends IBaseMapper<Department> {
             "and d.enabled = 1 " +
             "</script>"
     })
-    List<Department> selectList(@Param("departmentIdList") List<Long> departmentIdList, @Param("fetchAll") Boolean fetchAll);
-
-    @Select("select d.id, d.short_name, d.name, d.create_time, d.update_time from t_department d " +
-            "join t_department_department tdd on d.id = tdd.child_department_id " +
-            "where father_department_id = #{userDepartmentId} and child_department_id = #{id} and d.enabled = 1")
-    List<Department> selectByUserDepartmentIdAndId(@Param("userDepartmentId") Long userDepartmentId, @Param("id") Long id);
+    List<Department> getList(@Param("departmentIdList") List<Long> departmentIdList, @Param("fetchAll") Boolean fetchAll);
 
 }
