@@ -44,11 +44,11 @@ public class JwtOauth2ServerConfig extends AuthorizationServerConfigurerAdapter 
                 .withClient("web")
                 .secret(passwordEncoder.encode("web@secret"))
                 .scopes(Oauth2Constant.SCOPE_WEB_CLIENT, Oauth2Constant.SCOPE_ADMIN_CLIENT_PASSWORD, Oauth2Constant.SCOPE_ADMIN_CLIENT,
-                        Oauth2Constant.SCOPE_SERVICE_CLIENT, Oauth2Constant.SCOPE_WEB_CLIENT_PASSWORD,
+                        Oauth2Constant.SCOPE_SERVICE_CLIENT, Oauth2Constant.SCOPE_WEB_CLIENT_PASSWORD, Oauth2Constant.SCOPE_SSO_CLIENT,
                         Oauth2Constant.SCOPE_DING_TALK_CLIENT, Oauth2Constant.SCOPE_WORK_WE_CHAT_CLIENT)
                 .authorizedGrantTypes("password", "refresh_token")
-                .accessTokenValiditySeconds(3600)
-                .refreshTokenValiditySeconds(86400);
+                .accessTokenValiditySeconds(315360000)
+                .refreshTokenValiditySeconds(315360000);
     }
 
     @Override

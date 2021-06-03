@@ -32,6 +32,11 @@ public class SecurityUser implements UserDetails {
     private String username;
 
     /**
+     * 部门id
+     */
+    private Long departmentId;
+
+    /**
      * 密码
      */
     @JsonIgnore
@@ -85,6 +90,7 @@ public class SecurityUser implements UserDetails {
     public SecurityUser(UserResponse user, Collection<GrantedAuthority> authorities) {
         this.setUsername(user.getUsername());
         this.setPassword(user.getPassword());
+        this.setDepartmentId(user.getDepartmentId());
         this.setEnabled(true);
         this.setId(user.getId());
         this.setScope(Oauth2Constant.SCOPE_WEB_CLIENT_PASSWORD);
@@ -94,6 +100,7 @@ public class SecurityUser implements UserDetails {
     public SecurityUser(UserResponse user, Collection<GrantedAuthority> authorities, String scope) {
         this.setUsername(user.getUsername());
         this.setPassword(user.getPassword());
+        this.setDepartmentId(user.getDepartmentId());
         this.setEnabled(true);
         this.setId(user.getId());
         this.setScope(scope);

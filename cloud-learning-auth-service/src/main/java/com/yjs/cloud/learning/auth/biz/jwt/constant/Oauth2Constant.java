@@ -13,5 +13,6 @@ public class Oauth2Constant {
     public static String SCOPE_WORK_WE_CHAT_CLIENT = "work-we-chat-client";
     public static String SCOPE_DING_TALK_CLIENT = "ding-talk-client";
     public static String SCOPE_SERVICE_CLIENT = "service-client";
+    public static String SCOPE_SSO_CLIENT = "sso-client";
     public static String SCOPE_WEB_CLIENT_PASSWORD = "web-client-password";
 }

@@ -108,3 +108,17 @@ INSERT INTO t_role_authority (role_id, authority_id) VALUES (1, 20);
 
 --changeset bill:202104091
 INSERT INTO t_user_role (user_id, role_id) VALUES (1, 1);
+
+--changeset bill:202106011
+create table t_sso_client
+(
+    id bigint auto_increment primary key comment '主键id',
+    client_id varchar(500) not null comment '客户端id',
+    client_secret varchar(500) not null comment '客户端秘钥',
+    client_name nvarchar(500) not null comment '客户端名称',
+    create_time timestamp default current_timestamp comment '创建时间',
+    update_time timestamp default current_timestamp on update current_timestamp comment '最后修改时间'
+) comment '角色表';
+
+--changeset bill:202106012
+INSERT INTO t_sso_client (client_id, client_secret, client_name) VALUES ('de1a76b0e3a8478894ef614eab185f12', 'NTdkZGZkYjdiOTNkMTQ1NDE4ZGJiNzYxNWQxMTVhMDM=', 'OA')

@@ -25,7 +25,7 @@ public class MemberApi {
     public MemberResponse getByMobile(String mobile) {
         Map<String, Object> param = new HashMap<>(1);
         param.put("mobile", mobile);
-        return requestService.get("/member/auth-api/by-mobile", param, MemberResponse.class);
+        return requestService.get("/user-center/auth-api/by-mobile", param, MemberResponse.class);
     }
 
 }
