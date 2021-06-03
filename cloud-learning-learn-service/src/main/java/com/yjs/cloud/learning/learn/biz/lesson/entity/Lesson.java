@@ -3,6 +3,7 @@ package com.yjs.cloud.learning.learn.biz.lesson.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.yjs.cloud.learning.learn.biz.lesson.bean.LessonResponse;
 import com.yjs.cloud.learning.learn.biz.lesson.enums.LessonStatus;
+import com.yjs.cloud.learning.learn.biz.lesson.enums.LessonTargetType;
 import com.yjs.cloud.learning.learn.common.entity.BaseEntity;
 import com.yjs.cloud.learning.learn.common.util.BeanCopierUtils;
 import lombok.Data;
@@ -74,6 +75,11 @@ public class Lesson extends BaseEntity {
      * 作业附件
      */
     private String homeworkAttachment;
+
+    /**
+     * 目标类型
+     */
+    private LessonTargetType targetType;
 
     public LessonResponse convert() {
         LessonResponse response = new LessonResponse();

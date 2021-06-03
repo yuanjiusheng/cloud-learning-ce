@@ -29,7 +29,10 @@ public class LessonListRequest extends PageRequest {
     @ApiModelProperty(value = "状态")
     private LessonStatus status;
 
-    @ApiModelProperty(value = "是否显示")
-    private Boolean isShow;
+    @ApiModelProperty(value = "部门id")
+    private Long departmentId;
+
+    @ApiModelProperty(value = "会员id")
+    private Long memberId;
 
 }

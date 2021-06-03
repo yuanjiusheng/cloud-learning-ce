@@ -37,6 +37,7 @@ public class LoginUserHolder {
             userDTO.setId(Convert.toLong(userJsonObject.get("id")));
             userDTO.setAuthorities(Convert.toList(String.class,userJsonObject.get("authorities")));
             userDTO.setBearerToken(request.getHeader("Authorization"));
+            userDTO.setDepartmentId(Convert.toLong(userJsonObject.get("departmentId")));
         }
         return userDTO;
     }

@@ -1,6 +1,7 @@
 package com.yjs.cloud.learning.learn.biz.lesson.web;
 
 import com.yjs.cloud.learning.learn.biz.lesson.bean.*;
+import com.yjs.cloud.learning.learn.biz.lesson.enums.LessonStatus;
 import com.yjs.cloud.learning.learn.biz.lesson.service.LessonService;
 import com.yjs.cloud.learning.learn.common.controller.BaseController;
 import io.swagger.annotations.Api;
@@ -8,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -71,29 +73,51 @@ public class LessonController extends BaseController {
     @GetMapping("/public-api/lesson/recommend")
     public List<LessonResponse> recommendList() {
         LessonListRequest lessonListRequest = new LessonListRequest();
+        try {
+            lessonListRequest.setMemberId(getLoginUserId());
+            lessonListRequest.setDepartmentId(getDepartmentId());
+        } catch (Exception ignored) {
+            return new ArrayList<>();
+        }
         return lessonService.list(lessonListRequest).getList();
     }
 
     @ApiOperation(value = "获取分类热门推荐课程列表", notes = "获取分类热门推荐课程列表", httpMethod = "GET")
     @GetMapping("/public-api/lesson/hot")
     public List<LessonResponse> recommendList(LessonListRequest lessonListRequest) {
+        try {
+            lessonListRequest.setMemberId(getLoginUserId());
+            lessonListRequest.setDepartmentId(getDepartmentId());
+        } catch (Exception ignored) {
+            return new ArrayList<>();
+        }
         return lessonService.list(lessonListRequest).getList();
     }
 
     @ApiOperation(value = "获取课程信息(用户端)", notes = "获取课程信息", httpMethod = "GET")
     @GetMapping("/public-api/lesson")
     public LessonResponse getLesson(LessonGetRequest lessonGetRequest) {
-        try {
-            lessonGetRequest.setMemberId(getLoginUserId());
-        }catch (Exception ignored) {
-        }
+        lessonGetRequest.setMemberId(getLoginUserId());
+        lessonGetRequest.setDepartmentId(getDepartmentId());
+        lessonGetRequest.setStatus(LessonStatus.published);
         return lessonService.get(lessonGetRequest);
     }
 
     @ApiOperation(value = "获取课程列表", notes = "获取课程列表", httpMethod = "GET")
     @GetMapping("/public-api/lesson/list")
     public LessonListResponse publicList(LessonListRequest lessonListRequest) {
-        lessonListRequest.setIsShow(true);
+        try {
+            lessonListRequest.setMemberId(getLoginUserId());
+            lessonListRequest.setDepartmentId(getDepartmentId());
+        } catch (Exception ignored) {
+            LessonListResponse response = new LessonListResponse();
+            response.setCurrent(lessonListRequest.getCurrent());
+            response.setSize(lessonListRequest.getSize());
+            response.setTotal(0L);
+            response.setPages(0L);
+            response.setList(new ArrayList<>());
+            return response;
+        }
         return lessonService.list(lessonListRequest);
     }
 

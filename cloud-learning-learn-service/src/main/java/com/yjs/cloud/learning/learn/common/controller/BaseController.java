@@ -31,4 +31,13 @@ public class BaseController {
         return id;
     }
 
+    public Long getDepartmentId() {
+        UserDTO user = getUser();
+        Long id = user.getId();
+        if (id == null) {
+            throw new GlobalException("用户未登录");
+        }
+        return user.getDepartmentId();
+    }
+
 }

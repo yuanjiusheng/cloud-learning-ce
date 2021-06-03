@@ -18,6 +18,7 @@ public class UserDTO {
     private Long id;
     private String username;
     private String password;
+    private Long departmentId;
     private List<String> authorities;
     @JsonIgnore
     private String bearerToken;

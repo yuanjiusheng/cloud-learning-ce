@@ -17,6 +17,7 @@ import com.yjs.cloud.learning.learn.biz.lesson.bean.*;
 import com.yjs.cloud.learning.learn.biz.lesson.entity.Lesson;
 import com.yjs.cloud.learning.learn.biz.lesson.entity.LessonCategoryRelation;
 import com.yjs.cloud.learning.learn.biz.lesson.enums.LessonStatus;
+import com.yjs.cloud.learning.learn.biz.lesson.enums.LessonTargetType;
 import com.yjs.cloud.learning.learn.biz.lesson.mapper.LessonMapper;
 import com.yjs.cloud.learning.learn.biz.record.bean.RecordResponse;
 import com.yjs.cloud.learning.learn.biz.record.bean.SignUpGetPageListRequest;
@@ -64,6 +65,8 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
     private final SignUpService signUpService;
     @Lazy
     private final RecordService recordService;
+    private final LessonTargetMemberService lessonTargetMemberService;
+    private final LessonTargetDepartmentService lessonTargetDepartmentService;
 
     /**
      * 创建课程
@@ -81,6 +84,13 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
         save(lesson);
         // 保存分类
         lessonCategoryRelationService.create(lesson.getId(), lessonCreateRequest.getCidList());
+        if (lessonCreateRequest.getTargetType() != null && LessonTargetType.assign.equals(lessonCreateRequest.getTargetType())) {
+            if (CollectionUtils.isEmpty(lessonCreateRequest.getTargetDepartmentIdList()) && CollectionUtils.isEmpty(lessonCreateRequest.getTargetMemberIdList())) {
+                throw new GlobalException("目标权限为必填项");
+            }
+            lessonTargetMemberService.createOrUpdate(lesson.getId(), lessonCreateRequest.getTargetMemberIdList());
+            lessonTargetDepartmentService.createOrUpdate(lesson.getId(), lessonCreateRequest.getTargetDepartmentIdList());
+        }
         return lesson.convert();
     }
 
@@ -102,6 +112,13 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
         }
         updateById(updateLesson);
         lessonCategoryRelationService.update(lesson.getId(), lessonUpdateRequest.getCidList());
+        if (lessonUpdateRequest.getTargetType() != null && LessonTargetType.assign.equals(lessonUpdateRequest.getTargetType())) {
+            if (CollectionUtils.isEmpty(lessonUpdateRequest.getTargetDepartmentIdList()) && CollectionUtils.isEmpty(lessonUpdateRequest.getTargetMemberIdList())) {
+                throw new GlobalException("目标权限为必填项");
+            }
+            lessonTargetDepartmentService.createOrUpdate(lesson.getId(), lessonUpdateRequest.getTargetDepartmentIdList());
+            lessonTargetMemberService.createOrUpdate(lesson.getId(), lessonUpdateRequest.getTargetMemberIdList());
+        }
         return updateLesson.convert();
     }
 
@@ -222,9 +239,9 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
      */
     @Override
     public LessonResponse get(LessonGetRequest lessonGetRequest) {
-        Lesson lesson = getById(lessonGetRequest.getId());
+        Lesson lesson = lessonMapper.getById(lessonGetRequest);
         if (lesson == null) {
-            throw new GlobalException("频道不存在");
+            throw new GlobalException("找不到相关课程");
         }
         LessonResponse response = lesson.convert();
         List<Long> lessonIdList = new ArrayList<>();
@@ -256,6 +273,10 @@ public class LessonServiceImpl extends BaseServiceImpl<LessonMapper, Lesson> imp
                 List<RecordResponse> recordList = recordService.getByLessonIdAndSignUpId(response.getId(), signUpResponse.getId());
                 response.setRecordList(recordList);
             }
+        }
+        if (LessonTargetType.assign.equals(lesson.getTargetType())) {
+            response.setTargetMemberIdList(lessonTargetMemberService.getTargetMemberIdList(lesson.getId()));
+            response.setTargetDepartmentIdList(lessonTargetDepartmentService.getTargetDepartmentIdList(lesson.getId()));
         }
         return response;
     }

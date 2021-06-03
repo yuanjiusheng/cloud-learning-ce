@@ -48,12 +48,12 @@ create table t_lesson
 --changeset bill:2020070707
 create table t_lesson_chapter
 (
-    id             bigint auto_increment comment '主键id',
-    lesson_id bigint comment '课程id',
-    title           nvarchar(100) not null comment '章标题',
-    phrase nvarchar(255) not null default '' comment '介绍',
-    create_time    timestamp     not null default current_timestamp comment '创建时间',
-    update_time    timestamp     not null default current_timestamp on update current_timestamp comment '最后修改时间',
+    id          bigint auto_increment comment '主键id',
+    lesson_id   bigint comment '课程id',
+    title       nvarchar(100) not null comment '章标题',
+    phrase      nvarchar(255) not null default '' comment '介绍',
+    create_time timestamp     not null default current_timestamp comment '创建时间',
+    update_time timestamp     not null default current_timestamp on update current_timestamp comment '最后修改时间',
     primary key (id)
 ) comment '课程章表';
 
@@ -108,8 +108,10 @@ create table t_record
 ) comment '学习记录';
 
 --changeset bill:202104281
-alter table t_lesson add homework text not null comment '作业内容';
-alter table t_lesson add homework_attachment varchar(3000) default '' not null comment '作业附件';
+alter table t_lesson
+    add homework text not null comment '作业内容';
+alter table t_lesson
+    add homework_attachment varchar(3000) default '' not null comment '作业附件';
 
 --changeset bill:202104282
 create table t_homework_record
@@ -125,14 +127,43 @@ create table t_homework_record
 ) comment '作业提交内容记录';
 
 --changeset bill:202104283
-alter table t_record add max_progress_time bigint not null comment '最大的学习进度时间';
-alter table t_record add status varchar(200) default 'progressing' not null comment '状态';
+alter table t_record
+    add max_progress_time bigint not null comment '最大的学习进度时间';
+alter table t_record
+    add status varchar(200) default 'progressing' not null comment '状态';
 
 --changeset bill:202104284
-alter table t_lesson_chapter_section add total_time bigint not null comment '内容总时长';
+alter table t_lesson_chapter_section
+    add total_time bigint not null comment '内容总时长';
 
 --changeset bill:202104285
-alter table t_homework_record add sign_up_id bigint not null comment '报名id';
+alter table t_homework_record
+    add sign_up_id bigint not null comment '报名id';
 
 --changeset bill:202104286
-alter table t_sign_up add completed_time timestamp comment '完成时间';
+alter table t_sign_up
+    add completed_time timestamp comment '完成时间';
+
+--changeset bill:202106011
+create table t_lesson_target_member
+(
+    id          bigint auto_increment primary key comment '主键id',
+    member_id   bigint not null comment '会员id',
+    lesson_id   bigint not null comment '课程id',
+    create_time timestamp default current_timestamp comment '创建时间',
+    update_time timestamp default current_timestamp on update current_timestamp comment '最后修改时间'
+) comment '目标会员';
+
+--changeset bill:202106012
+create table t_lesson_target_department
+(
+    id            bigint auto_increment primary key comment '主键id',
+    department_id bigint not null comment '部门id',
+    lesson_id     bigint not null comment '课程id',
+    create_time   timestamp default current_timestamp comment '创建时间',
+    update_time   timestamp default current_timestamp on update current_timestamp comment '最后修改时间'
+) comment '目标部门';
+
+--changeset bill:202106013
+alter table t_lesson
+    add target_type varchar(100) default 'all' not null comment '目标类型';

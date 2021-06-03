@@ -2,6 +2,7 @@ package com.yjs.cloud.learning.learn.biz.lesson.bean;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yjs.cloud.learning.learn.biz.lesson.enums.LessonStatus;
+import com.yjs.cloud.learning.learn.biz.lesson.enums.LessonTargetType;
 import com.yjs.cloud.learning.learn.biz.record.bean.RecordResponse;
 import com.yjs.cloud.learning.learn.biz.signup.bean.SignUpResponse;
 import com.yjs.cloud.learning.learn.common.response.BaseResponse;
@@ -78,5 +79,14 @@ public class LessonResponse extends BaseResponse {
 
     @ApiModelProperty(value = "作业附件")
     private String homeworkAttachment;
+
+    @ApiModelProperty(value = "目标类型")
+    private LessonTargetType targetType;
+
+    @ApiModelProperty(value = "目标会员Id列表")
+    private List<Long> targetMemberIdList;
+
+    @ApiModelProperty(value = "目标组织架构Id列表")
+    private List<Long> targetDepartmentIdList;
 
 }
