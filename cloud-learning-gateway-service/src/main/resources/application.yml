@@ -68,6 +68,7 @@ spring:
                         -   Path=/message/**
 permit-all-url:
     patterns:
+        -   /login/sso
         -   /login
         -   /login/refresh
         -   /login/auth-code

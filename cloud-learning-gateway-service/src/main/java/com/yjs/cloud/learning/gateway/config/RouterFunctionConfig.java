@@ -54,6 +54,7 @@ public class RouterFunctionConfig {
                 .andRoute(POST("/login/ding-talk"), this::dingTalkAuth)
                 .andRoute(POST("/login/service"), this::serviceAuth)
                 .andRoute(POST("/login/service/refresh"), this::refreshAuthService)
+                .andRoute(POST("/login/sso"), this::loginSso)
                 .andRoute(GET("/current-member"), this::currentMember)
                 .andRoute(GET("/current-user"), this::currentUser);
     }
@@ -99,6 +100,20 @@ public class RouterFunctionConfig {
                     .ok()
                     .body(memberMono, UnifiedResponse.class);
         }
+    }
+
+    /**
+     * authentication
+     * @param request ServerRequest
+     * @return Mono<ServerResponse>
+     */
+    private Mono<ServerResponse> loginSso(ServerRequest request) {
+        Mono<SsoAuthenticationRequest> authenticationRequestMono = request.bodyToMono(SsoAuthenticationRequest.class);
+        Mono<String> oauth2RequestMono = authenticationRequestMono.map(n -> "username=" + n.getUsername() +
+                "&password=" + n.getClientSecret() + "&clientId=" + n.getClientId() +
+                "&grant_type=password&scope=sso-client"
+        );
+        return authResponseMono(oauth2RequestMono);
     }
 
     /**
