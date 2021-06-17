@@ -1,5 +1,6 @@
 package com.yjs.cloud.learning.learn.biz.record.bean;
 
+import com.yjs.cloud.learning.learn.biz.record.enums.RecordStatus;
 import com.yjs.cloud.learning.learn.common.response.BaseResponse;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -34,4 +35,12 @@ public class RecordResponse extends BaseResponse {
     @ApiModelProperty(value = "学习时长")
     private Long learnTime;
 
+    @ApiModelProperty(value = "最大的学习进度时间")
+    private Long maxProgressTime;
+
+    @ApiModelProperty(value = "最后的学习进度时间")
+    private Long lastProgressTime;
+
+    @ApiModelProperty(value = "状态")
+    private RecordStatus status;
 }

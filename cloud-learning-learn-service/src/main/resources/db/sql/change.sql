@@ -167,3 +167,7 @@ create table t_lesson_target_department
 --changeset bill:202106013
 alter table t_lesson
     add target_type varchar(100) default 'all' not null comment '目标类型';
+
+--changeset bill:202106171
+alter table t_record
+    add last_progress_time bigint not null comment '最后的学习进度时间';

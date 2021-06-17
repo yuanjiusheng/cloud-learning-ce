@@ -97,6 +97,7 @@ public class RecordServiceImpl extends BaseServiceImpl<RecordMapper, Record> imp
         if (recordUpdateRequest.getLearnTime() == null) {
             throw new GlobalException("学习时长为必填项");
         }
+        record.setLastProgressTime(recordUpdateRequest.getLastProgressTime());
         record.setLearnTime(record.getLearnTime() + recordUpdateRequest.getLearnTime());
         if (record.getMaxProgressTime() < recordUpdateRequest.getMaxProgressTime()) {
             record.setMaxProgressTime(recordUpdateRequest.getMaxProgressTime());

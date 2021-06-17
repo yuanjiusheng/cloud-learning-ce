@@ -35,6 +35,9 @@ public class RecordCreateRequest {
     @ApiModelProperty(value = "最大学习进度时间")
     private Long maxProgressTime;
 
+    @ApiModelProperty(value = "最后的学习进度时间")
+    private Long lastProgressTime;
+
     @ApiModelProperty(value = "状态", hidden = true)
     private RecordStatus status = RecordStatus.progressing;
 

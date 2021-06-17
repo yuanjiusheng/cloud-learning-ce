@@ -50,6 +50,11 @@ public class Record extends BaseEntity {
     private Long maxProgressTime;
 
     /**
+     * 最后的学习进度时间
+     */
+    private Long lastProgressTime;
+
+    /**
      * 状态
      */
     private RecordStatus status;

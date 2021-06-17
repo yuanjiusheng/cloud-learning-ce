@@ -35,4 +35,7 @@ public class RecordUpdateRequest {
     @ApiModelProperty(value = "最大学习进度时间")
     private Long maxProgressTime;
 
+    @ApiModelProperty(value = "最后的学习进度时间")
+    private Long lastProgressTime;
+
 }
