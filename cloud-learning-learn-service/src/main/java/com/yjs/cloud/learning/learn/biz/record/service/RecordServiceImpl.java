@@ -11,7 +11,9 @@ import com.yjs.cloud.learning.learn.biz.record.entity.Record;
 import com.yjs.cloud.learning.learn.biz.record.enums.RecordStatus;
 import com.yjs.cloud.learning.learn.biz.record.mapper.RecordMapper;
 import com.yjs.cloud.learning.learn.biz.signup.service.SignUpService;
+import com.yjs.cloud.learning.learn.common.entity.BaseEntity;
 import com.yjs.cloud.learning.learn.common.service.BaseServiceImpl;
+import com.yjs.cloud.learning.learn.common.util.BeanCopierUtils;
 import com.yjs.cloud.learning.learn.common.web.GlobalException;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -61,10 +63,23 @@ public class RecordServiceImpl extends BaseServiceImpl<RecordMapper, Record> imp
             throw new GlobalException("学习进度时间为必填项");
         }
         // 判断是否已经存在
-        Record record = recordCreateRequest.convert();
-        // 计算学习状态
-        record.setStatus(calcStatus(record));
-        save(record);
+        LambdaQueryWrapper<Record> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Record::getLessonId, recordCreateRequest.getLessonId());
+        lambdaQueryWrapper.eq(Record::getSignUpId, recordCreateRequest.getSignUpId());
+        lambdaQueryWrapper.eq(Record::getMemberId, recordCreateRequest.getMemberId());
+        lambdaQueryWrapper.eq(Record::getLessonChapterSectionId, recordCreateRequest.getLessonChapterSectionId());
+        Record record = getOne(lambdaQueryWrapper);
+        if (record != null) {
+            RecordUpdateRequest request = new RecordUpdateRequest();
+            BeanCopierUtils.copy(recordCreateRequest, request);
+            request.setId(record.getId());
+            return update(request);
+        } else {
+            record = recordCreateRequest.convert();
+            // 计算学习状态
+            record.setStatus(calcStatus(record));
+            save(record);
+        }
         return record.convert();
     }
 
@@ -140,11 +155,12 @@ public class RecordServiceImpl extends BaseServiceImpl<RecordMapper, Record> imp
         lambdaQueryWrapper.eq(Record::getMemberId, recordGetRequest.getMemberId());
         lambdaQueryWrapper.eq(Record::getLessonChapterSectionId, recordGetRequest.getLessonChapterSectionId());
         lambdaQueryWrapper.eq(Record::getSignUpId, recordGetRequest.getSignUpId());
-        Record record = getOne(lambdaQueryWrapper);
-        if (record == null) {
+        lambdaQueryWrapper.orderByDesc(BaseEntity::getId);
+        List<Record> recordList = list(lambdaQueryWrapper);
+        if (CollectionUtils.isEmpty(recordList)) {
             return null;
         }
-        return record.convert();
+        return recordList.get(0).convert();
     }
 
     /**

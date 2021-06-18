@@ -79,6 +79,7 @@ public class LessonController extends BaseController {
         } catch (Exception ignored) {
             return new ArrayList<>();
         }
+        lessonListRequest.setStatus(LessonStatus.published);
         return lessonService.list(lessonListRequest).getList();
     }
 
@@ -91,6 +92,7 @@ public class LessonController extends BaseController {
         } catch (Exception ignored) {
             return new ArrayList<>();
         }
+        lessonListRequest.setStatus(LessonStatus.published);
         return lessonService.list(lessonListRequest).getList();
     }
 
@@ -118,6 +120,7 @@ public class LessonController extends BaseController {
             response.setList(new ArrayList<>());
             return response;
         }
+        lessonListRequest.setStatus(LessonStatus.published);
         return lessonService.list(lessonListRequest);
     }
 
