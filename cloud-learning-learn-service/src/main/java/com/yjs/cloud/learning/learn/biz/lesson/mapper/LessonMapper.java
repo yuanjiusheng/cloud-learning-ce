@@ -23,7 +23,7 @@ public interface LessonMapper extends IBaseMapper<Lesson> {
             "select distinct l.id, l.name, l.code, l.start_time, l.end_time, l.image, l.status, l.phrase, l.introduction, l.homework, l.homework_attachment, l.target_type, l.create_time, l.update_time " ,
             "from t_lesson l " ,
             "join t_lesson_category_relation lcr on lcr.lesson_id = l.id " ,
-            "where 1 = 1 " ,
+            "where 1 = 1 and l.status != 'deleted' " ,
             "   <if test='req.memberId != null'>",
             "       and if(l.target_type = 'all', 1 = 1, " ,
             "           exists( " ,
