@@ -5,8 +5,8 @@ spring:
         name: cloud-learning-community-oss-service
     servlet:
         multipart:
-            max-file-size: 50MB
-            max-request-size: 50MB
+            max-file-size: 2048MB
+            max-request-size: 2048MB
 
 mybatis-plus:
     global-config:
