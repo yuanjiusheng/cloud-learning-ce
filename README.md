@@ -12,7 +12,7 @@
 > - 部署如遇到困难、商务合作或技术交流可通过后面的联系方式跟我们交流
 
 ### 演示地址
-> + 内训版本演示地址：
+> + 内训版演示地址：
 >   - 前台：[http://www.chawind.com:6653](http://www.chawind.com:6653)
 >   - 后台：[http://www.chawind.com:6652](http://www.chawind.com:6652)
 >
