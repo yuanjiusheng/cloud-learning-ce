@@ -43,9 +43,6 @@
 ### 订阅公众号
 > ![猿究生](https://images.gitee.com/uploads/images/2021/1027/111546_142fb6ad_8545701.png "xxxx.png")
 
-### 官方交流群（855067729）
-> 点击加入 QQ 群 <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=IBIAaD415UtInXIty2DgO7Yg9kTsgjnd&jump_from=webapi"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="cloud-learning官方群" title="cloud-learning官方群"></a>
-
 ### 商业合作
 > + 如果您想使用功能更完善的在线教育系统，我们提供其他版本！
 > + 如果您想基于猿究生学习平台系统进行定制开发，我们提供有偿服务支持！
